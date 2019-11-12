@@ -1344,11 +1344,11 @@ a.text-primary:focus {
   color: #286090;
 }
 .text-success {
-  color: #3c763d;
+  color: #000000;
 }
 a.text-success:hover,
 a.text-success:focus {
-  color: #2b542c;
+  color: #000000;
 }
 .text-info {
   color: #31708f;
@@ -1359,6 +1359,9 @@ a.text-info:focus {
 }
 .text-warning {
   color: #8a6d3b;
+}
+.text-announce {
+  color: #000000;
 }
 a.text-warning:hover,
 a.text-warning:focus {
@@ -6484,14 +6487,14 @@ button.close {
   cursor: pointer;
   background-color: #000 \9;
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid #fff;
+  border: 1px solid #337ab7;
   border-radius: 10px;
 }
 .carousel-indicators .active {
   width: 12px;
   height: 12px;
   margin: 0;
-  background-color: #fff;
+  background-color: #000;
 }
 .carousel-caption {
   position: absolute;
@@ -6831,4 +6834,5 @@ button.close {
     display: none !important;
   }
 }
+
 /*# sourceMappingURL=bootstrap.css.map */
