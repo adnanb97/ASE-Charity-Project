@@ -32,8 +32,15 @@ namespace CharityProject
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<CharityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CharityConnection")));
+            services.AddDbContext<CharityContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("CharityConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("CharityConnection"), b => b.MigrationsAssembly("CharityProject"));
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +64,7 @@ namespace CharityProject
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Organizations}/{action=Index}/{id?}");
             });
         }
     }

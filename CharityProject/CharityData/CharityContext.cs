@@ -16,6 +16,8 @@ namespace CharityProject
 
         public DbSet<CharityData.Models.Action> action { get; set; }
         public DbSet<Card> card { get; set; }
+        public DbSet<Account> account { get; set; }
+        public DbSet<Image> image { get; set; }
         public DbSet<Item> item { get; set; }
         public DbSet<ItemInAction> itemInAction { get; set; }
         public DbSet<Messages> message { get; set; }
