@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20191120005641_Adding seeders for Accounts.cs" />
     <Compile Remove="Migrations\20191120010703_Adding seeders for Accounts.cs" />
     <Compile Remove="Migrations\20191120011340_Adding migration and seeders for images &amp; accounts.cs" />
+    <Compile Remove="Migrations\20191120011652_Adding migration and seeders for images &amp; accounts.cs" />
+    <Compile Remove="Migrations\20191120221037_Adding migration and seeders for all models.cs" />
   </ItemGroup>
 
   <ItemGroup>

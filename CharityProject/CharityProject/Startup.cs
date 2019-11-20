@@ -64,7 +64,7 @@ namespace CharityProject
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Organizations}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

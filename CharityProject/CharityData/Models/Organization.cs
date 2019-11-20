@@ -24,6 +24,6 @@ namespace CharityData.Models
         public string description { get; set; }
 
         [Required]
-        public Card creditCardNumber { get; set; }
+        public Guid creditCardNumber { get; set; }
     }
 }

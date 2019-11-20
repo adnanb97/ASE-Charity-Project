@@ -18,5 +18,7 @@ namespace CharityData.Models
 
         [Required]
         public int value { get; set; }
+
+        public Guid userDonatedId { get; set; }
     }
 }

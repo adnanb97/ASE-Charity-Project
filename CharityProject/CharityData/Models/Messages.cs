@@ -17,5 +17,7 @@ namespace CharityData.Models
         [Required]
         [StringLength(500, ErrorMessage = "Message cannot be longer than 500 characters.")]
         public string message { get; set; }
+        
+        public DateTime sendingTime { get; set; }
     }
 }
