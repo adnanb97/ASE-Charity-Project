@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191112232455_Initial Migration.cs" />
     <Compile Remove="Migrations\20191114214822_Add initial entity models.cs" />
+    <Compile Remove="Migrations\20191114233753_Add initial entity models.cs" />
+    <Compile Remove="Migrations\20191119223437_Elenas model for account, user, organization and image.cs" />
+    <Compile Remove="Migrations\20191120004924_Adding seeders for Images.cs" />
+    <Compile Remove="Migrations\20191120005641_Adding seeders for Accounts.cs" />
+    <Compile Remove="Migrations\20191120010703_Adding seeders for Accounts.cs" />
+    <Compile Remove="Migrations\20191120011340_Adding migration and seeders for images &amp; accounts.cs" />
   </ItemGroup>
 
   <ItemGroup>

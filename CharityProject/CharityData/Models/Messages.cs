@@ -7,12 +7,12 @@ namespace CharityData.Models
 {
     public class Messages
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public User userSenderId { get; set; }
-        public User userReceiverId { get; set; }
-        public Organization organizationSenderId { get; set; }
-        public Organization organizationReceiverId { get; set; } 
+        public Guid userSenderId { get; set; }
+        public Guid userReceiverId { get; set; }
+        public Guid organizationSenderId { get; set; }
+        public Guid organizationReceiverId { get; set; } 
 
         [Required]
         [StringLength(500, ErrorMessage = "Message cannot be longer than 500 characters.")]

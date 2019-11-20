@@ -35,7 +35,7 @@ namespace CharityProject
             services.AddDbContext<CharityContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("CharityConnection"));
-                options.UseSqlServer(Configuration.GetConnectionString("CharityConnection"), b => b.MigrationsAssembly("CharityProject"));
+                //options.UseSqlServer(Configuration.GetConnectionString("CharityConnection"), b => b.MigrationsAssembly("CharityProject"));
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             

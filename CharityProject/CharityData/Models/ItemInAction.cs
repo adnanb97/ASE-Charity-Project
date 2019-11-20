@@ -7,12 +7,12 @@ namespace CharityData.Models
 {
     public class ItemInAction
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public Item itemId { get; set; }
+        public Guid itemId { get; set; }
         [Required]
-        public Action actionId { get; set; }
+        public Guid actionId { get; set; }
 
     }
 }

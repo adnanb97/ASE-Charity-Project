@@ -7,9 +7,9 @@ namespace CharityData.Models
 {
     public class UserParticipatingInAction
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
-        public User userId { get; set; }
-        public Action actionId { get; set; }
+        public Guid userId { get; set; }
+        public Guid actionId { get; set; }
     }
 }

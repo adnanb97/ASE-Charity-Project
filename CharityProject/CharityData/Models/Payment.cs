@@ -7,12 +7,12 @@ namespace CharityData.Models
 {
     public class Payment
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public User userSenderId { get; set; }
+        public Guid userSenderId { get; set; }
         [Required]
-        public Organization organizationReceiverId { get; set; }
+        public Guid organizationReceiverId { get; set; }
         
         [Required]
         [Range(0,Double.MaxValue)]

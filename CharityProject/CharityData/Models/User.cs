@@ -8,9 +8,9 @@ namespace CharityData.Models
 {
     public class User
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public Account UserAccount { get; set; }
+        public Guid UserAccount { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
@@ -26,6 +26,6 @@ namespace CharityData.Models
         public DateTime dateOfBirth { get; set; }
 
         
-        public Card creditCardId { get; set; }
+        public Guid creditCardId { get; set; }
     }
 }

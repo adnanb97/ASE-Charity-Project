@@ -7,13 +7,13 @@ namespace CharityData.Models
 {
     public class Organization
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
         public string name { get; set; }
 
-        public Account UserAccount { get; set; }
+        public Guid UserAccount { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
