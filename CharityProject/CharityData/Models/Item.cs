@@ -7,7 +7,7 @@ namespace CharityData.Models
 {
     public class Item
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
         [Required]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
@@ -18,5 +18,7 @@ namespace CharityData.Models
 
         [Required]
         public int value { get; set; }
+
+        public Guid userDonatedId { get; set; }
     }
 }

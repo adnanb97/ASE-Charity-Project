@@ -7,7 +7,7 @@ namespace CharityData.Models
 {
     public class Card
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

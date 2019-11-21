@@ -5,14 +5,11 @@ using System.Text;
 
 namespace CharityData.Models
 {
-    public class ItemInAction
+    public class Image
     {
+        [Key]
         public Guid Id { get; set; }
-
-        [Required]
-        public Guid itemId { get; set; }
-        [Required]
-        public Guid actionId { get; set; }
+        public  string Path{ get; set; }
 
     }
 }

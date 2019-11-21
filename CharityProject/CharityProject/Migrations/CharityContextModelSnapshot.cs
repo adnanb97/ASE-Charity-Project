@@ -4,22 +4,45 @@ using CharityProject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CharityData.Migrations
+namespace CharityProject.Migrations
 {
     [DbContext(typeof(CharityContext))]
-    [Migration("20191114233753_Add initial entity models")]
-    partial class Addinitialentitymodels
+    partial class CharityContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CharityData.Models.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("imageIdId");
+
+                    b.Property<bool>("isUser");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("username")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("imageIdId");
+
+                    b.ToTable("account");
+                });
 
             modelBuilder.Entity("CharityData.Models.Action", b =>
                 {
@@ -61,6 +84,19 @@ namespace CharityData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("card");
+                });
+
+            modelBuilder.Entity("CharityData.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("image");
                 });
 
             modelBuilder.Entity("CharityData.Models.Item", b =>
@@ -139,6 +175,8 @@ namespace CharityData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("UserAccountId");
+
                     b.Property<int>("creditCardNumberId");
 
                     b.Property<DateTime>("dateOfFounding");
@@ -150,15 +188,9 @@ namespace CharityData.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
                     b.HasKey("Id");
+
+                    b.HasIndex("UserAccountId");
 
                     b.HasIndex("creditCardNumberId");
 
@@ -234,6 +266,8 @@ namespace CharityData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("UserAccountId");
+
                     b.Property<int?>("creditCardIdId");
 
                     b.Property<DateTime>("dateOfBirth");
@@ -246,15 +280,9 @@ namespace CharityData.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
                     b.HasKey("Id");
+
+                    b.HasIndex("UserAccountId");
 
                     b.HasIndex("creditCardIdId");
 
@@ -278,6 +306,13 @@ namespace CharityData.Migrations
                     b.HasIndex("userIdId");
 
                     b.ToTable("userParticipatingInAction");
+                });
+
+            modelBuilder.Entity("CharityData.Models.Account", b =>
+                {
+                    b.HasOne("CharityData.Models.Image", "imageId")
+                        .WithMany()
+                        .HasForeignKey("imageIdId");
                 });
 
             modelBuilder.Entity("CharityData.Models.Action", b =>
@@ -322,6 +357,10 @@ namespace CharityData.Migrations
 
             modelBuilder.Entity("CharityData.Models.Organization", b =>
                 {
+                    b.HasOne("CharityData.Models.Account", "UserAccount")
+                        .WithMany()
+                        .HasForeignKey("UserAccountId");
+
                     b.HasOne("CharityData.Models.Card", "creditCardNumber")
                         .WithMany()
                         .HasForeignKey("creditCardNumberId")
@@ -364,6 +403,10 @@ namespace CharityData.Migrations
 
             modelBuilder.Entity("CharityData.Models.User", b =>
                 {
+                    b.HasOne("CharityData.Models.Account", "UserAccount")
+                        .WithMany()
+                        .HasForeignKey("UserAccountId");
+
                     b.HasOne("CharityData.Models.Card", "creditCardId")
                         .WithMany()
                         .HasForeignKey("creditCardIdId");

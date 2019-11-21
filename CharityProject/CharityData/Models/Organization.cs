@@ -7,19 +7,13 @@ namespace CharityData.Models
 {
     public class Organization
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
         public string name { get; set; }
 
-        [Required]
-        [StringLength(50, ErrorMessage = "Username cannot be longer than 50 characters.")]
-        public string username { get; set; }
-
-        [Required]
-        [StringLength(50, ErrorMessage = "Password cannot be longer than 50 characters.")]
-        public string password { get; set; }
+        public Guid UserAccount { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -30,6 +24,6 @@ namespace CharityData.Models
         public string description { get; set; }
 
         [Required]
-        public Card creditCardNumber { get; set; }
+        public Guid creditCardNumber { get; set; }
     }
 }

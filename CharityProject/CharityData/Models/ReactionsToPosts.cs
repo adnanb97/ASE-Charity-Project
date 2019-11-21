@@ -7,10 +7,12 @@ namespace CharityData.Models
 {
     public class ReactionsToPosts
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool liked { get; set; }
         public bool commented { get; set; }
         [Required]
-        public ProfilePosts postId { get; set; }
+        public Guid postId { get; set; }
+        public Guid userReactedId { get; set; }
+        public string commentText { get; set; }
     }
 }

@@ -2,71 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CharityData.Migrations
+namespace CharityProject.Migrations
 {
-    public partial class Addinitialentitymodels : Migration
+    public partial class ChangeStruct : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "creditCardNumber",
-                table: "Users");
-
-            migrationBuilder.RenameTable(
-                name: "Users",
-                newName: "user");
-
-            migrationBuilder.RenameColumn(
-                name: "id",
-                table: "user",
-                newName: "Id");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "username",
-                table: "user",
-                maxLength: 50,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "password",
-                table: "user",
-                maxLength: 50,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "lastName",
-                table: "user",
-                maxLength: 50,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "firstName",
-                table: "user",
-                maxLength: 50,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "creditCardIdId",
-                table: "user",
-                nullable: true);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_user",
-                table: "user",
-                column: "Id");
-
             migrationBuilder.CreateTable(
                 name: "card",
                 columns: table => new
@@ -79,6 +20,19 @@ namespace CharityData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_card", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Path = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_image", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,14 +51,35 @@ namespace CharityData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "account",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    username = table.Column<string>(maxLength: 50, nullable: false),
+                    password = table.Column<string>(maxLength: 50, nullable: false),
+                    imageIdId = table.Column<int>(nullable: true),
+                    isUser = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_account", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_account_image_imageIdId",
+                        column: x => x.imageIdId,
+                        principalTable: "image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "organization",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(maxLength: 50, nullable: false),
-                    username = table.Column<string>(maxLength: 50, nullable: false),
-                    password = table.Column<string>(maxLength: 50, nullable: false),
+                    UserAccountId = table.Column<int>(nullable: true),
                     dateOfFounding = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(maxLength: 200, nullable: true),
                     creditCardNumberId = table.Column<int>(nullable: false)
@@ -113,11 +88,46 @@ namespace CharityData.Migrations
                 {
                     table.PrimaryKey("PK_organization", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_organization_account_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalTable: "account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_organization_card_creditCardNumberId",
                         column: x => x.creditCardNumberId,
                         principalTable: "card",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserAccountId = table.Column<int>(nullable: true),
+                    firstName = table.Column<string>(maxLength: 50, nullable: false),
+                    lastName = table.Column<string>(maxLength: 50, nullable: false),
+                    dateOfBirth = table.Column<DateTime>(nullable: false),
+                    creditCardIdId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_user_account_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalTable: "account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_user_card_creditCardIdId",
+                        column: x => x.creditCardIdId,
+                        principalTable: "card",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,9 +321,9 @@ namespace CharityData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_creditCardIdId",
-                table: "user",
-                column: "creditCardIdId");
+                name: "IX_account_imageIdId",
+                table: "account",
+                column: "imageIdId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_action_organizationIdId",
@@ -351,6 +361,11 @@ namespace CharityData.Migrations
                 column: "userSenderIdId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_organization_UserAccountId",
+                table: "organization",
+                column: "UserAccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_organization_creditCardNumberId",
                 table: "organization",
                 column: "creditCardNumberId");
@@ -381,6 +396,16 @@ namespace CharityData.Migrations
                 column: "postIdId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_UserAccountId",
+                table: "user",
+                column: "UserAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_creditCardIdId",
+                table: "user",
+                column: "creditCardIdId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_userParticipatingInAction_actionIdId",
                 table: "userParticipatingInAction",
                 column: "actionIdId");
@@ -389,22 +414,10 @@ namespace CharityData.Migrations
                 name: "IX_userParticipatingInAction_userIdId",
                 table: "userParticipatingInAction",
                 column: "userIdId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_user_card_creditCardIdId",
-                table: "user",
-                column: "creditCardIdId",
-                principalTable: "card",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_user_card_creditCardIdId",
-                table: "user");
-
             migrationBuilder.DropTable(
                 name: "itemInAction");
 
@@ -430,69 +443,19 @@ namespace CharityData.Migrations
                 name: "action");
 
             migrationBuilder.DropTable(
+                name: "user");
+
+            migrationBuilder.DropTable(
                 name: "organization");
+
+            migrationBuilder.DropTable(
+                name: "account");
 
             migrationBuilder.DropTable(
                 name: "card");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_user",
-                table: "user");
-
-            migrationBuilder.DropIndex(
-                name: "IX_user_creditCardIdId",
-                table: "user");
-
-            migrationBuilder.DropColumn(
-                name: "creditCardIdId",
-                table: "user");
-
-            migrationBuilder.RenameTable(
-                name: "user",
-                newName: "Users");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Users",
-                newName: "id");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "username",
-                table: "Users",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 50);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "password",
-                table: "Users",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 50);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "lastName",
-                table: "Users",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 50);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "firstName",
-                table: "Users",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 50);
-
-            migrationBuilder.AddColumn<string>(
-                name: "creditCardNumber",
-                table: "Users",
-                nullable: true);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "id");
+            migrationBuilder.DropTable(
+                name: "image");
         }
     }
 }
