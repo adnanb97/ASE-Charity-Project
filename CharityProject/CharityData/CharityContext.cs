@@ -69,9 +69,9 @@ namespace CharityProject
 
             #region ArrayOfUsers
             User[] arrayOfUsers = new User[3];
-            arrayOfUsers[0] = new User { Id = Guid.NewGuid(), firstName = "Foo", lastName = "Bar", dateOfBirth = new DateTime(1997, 1, 5), creditCardId = arrayOfCreditCard[0].Id, UserAccount = arrayOfAccounts[0].Id };
-            arrayOfUsers[1] = new User { Id = Guid.NewGuid(), firstName = "John", lastName = "Doe", dateOfBirth = new DateTime(1980, 11, 10), creditCardId = arrayOfCreditCard[1].Id, UserAccount = arrayOfAccounts[1].Id };
-            arrayOfUsers[2] = new User { Id = Guid.NewGuid(), firstName = "Nicholas", lastName = "Cage", dateOfBirth = new DateTime(1970, 5, 15), creditCardId = arrayOfCreditCard[2].Id, UserAccount = arrayOfAccounts[2].Id };
+            arrayOfUsers[0] = new User { Id = Guid.NewGuid(), firstName = "Foo", lastName = "Bar", gender = 'M', dateOfBirth = new DateTime(1997, 1, 5), creditCardId = arrayOfCreditCard[0].Id, UserAccount = arrayOfAccounts[0].Id };
+            arrayOfUsers[1] = new User { Id = Guid.NewGuid(), firstName = "John", lastName = "Doe", gender = 'F', dateOfBirth = new DateTime(1980, 11, 10), creditCardId = arrayOfCreditCard[1].Id, UserAccount = arrayOfAccounts[1].Id };
+            arrayOfUsers[2] = new User { Id = Guid.NewGuid(), firstName = "Nicholas", lastName = "Cage", gender = 'M', dateOfBirth = new DateTime(1970, 5, 15), creditCardId = arrayOfCreditCard[2].Id, UserAccount = arrayOfAccounts[2].Id };
             #endregion
 
             #region ArrayOfOrganizations
@@ -126,7 +126,7 @@ namespace CharityProject
             #region ArrayOfReactionsToPosts
             ReactionsToPosts[] arrayOfReactionsToPosts = new ReactionsToPosts[3];
             arrayOfReactionsToPosts[0] = new ReactionsToPosts { Id = Guid.NewGuid(), postId = arrayOfProfilePosts[0].Id, liked = true, commented = false, userReactedId = arrayOfUsers[2].Id };
-            arrayOfReactionsToPosts[1] = new ReactionsToPosts { Id = Guid.NewGuid(), postId = arrayOfProfilePosts[1].Id, liked = true, commented = true, userReactedId = arrayOfUsers[0].Id };
+            arrayOfReactionsToPosts[1] = new ReactionsToPosts { Id = Guid.NewGuid(), postId = arrayOfProfilePosts[1].Id, liked = true, commented = true, userReactedId = arrayOfUsers[0].Id, commentText = "Glad you did that!" };
             arrayOfReactionsToPosts[2] = new ReactionsToPosts { Id = Guid.NewGuid(), postId = arrayOfProfilePosts[2].Id, liked = true, commented = false, userReactedId = arrayOfUsers[1].Id };
             #endregion
 

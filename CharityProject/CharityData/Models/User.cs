@@ -21,6 +21,9 @@ namespace CharityData.Models
         public string lastName { get; set; }
 
         [Required]
+        public char gender { get; set; }
+
+        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime dateOfBirth { get; set; }

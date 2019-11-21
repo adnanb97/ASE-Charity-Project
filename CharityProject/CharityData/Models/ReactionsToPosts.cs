@@ -13,5 +13,6 @@ namespace CharityData.Models
         [Required]
         public Guid postId { get; set; }
         public Guid userReactedId { get; set; }
+        public string commentText { get; set; }
     }
 }
