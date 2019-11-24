@@ -5,18 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CharityProject.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View();
         }
 
         public IActionResult About()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             ViewData["Message"] = "Your application description page.";
 
             return View();
@@ -24,6 +30,8 @@ namespace CharityProject.Controllers
 
         public IActionResult Contact()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             ViewData["Message"] = "Your contact page.";
 
             return View();
