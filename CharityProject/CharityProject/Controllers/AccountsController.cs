@@ -12,6 +12,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace CharityProject.Controllers
 {
@@ -42,7 +44,13 @@ namespace CharityProject.Controllers
             
             if (ModelState.IsValid)
             {
-                var isValid = _context.account.Any(a => (account.username == a.username && account.password == a.password));
+                var sha256 = SHA256.Create();
+                
+                // Send a sample text to hash.  
+                var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes(account.password));
+                // Get the hashed string.  
+                var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                var isValid = _context.account.Any(a => (account.username == a.username && hash1 == a.password));
                 if (!isValid)
                 {
                     ModelState.AddModelError("", "username or password is invalid");

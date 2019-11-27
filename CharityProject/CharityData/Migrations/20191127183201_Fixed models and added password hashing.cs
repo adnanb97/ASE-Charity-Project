@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CharityData.Migrations
 {
-    public partial class FixedmigrationforPostReactionnotextwhencommentingandUserGender : Migration
+    public partial class Fixedmodelsandaddedpasswordhashing : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -243,38 +243,81 @@ namespace CharityData.Migrations
                 table: "reactionsToPosts",
                 nullable: true);
 
+            migrationBuilder.AddColumn<double>(
+                name: "amount",
+                table: "card",
+                nullable: false,
+                defaultValue: 0.0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "creditCardNumber",
+                table: "card",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "creationDateTime",
+                table: "action",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "endDateTime",
+                table: "action",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "startDateTime",
+                table: "action",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AlterColumn<string>(
+                name: "password",
+                table: "account",
+                maxLength: 80,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 50);
+
+            migrationBuilder.AddColumn<string>(
+                name: "email",
+                table: "account",
+                nullable: true);
+
             migrationBuilder.InsertData(
                 table: "account",
-                columns: new[] { "Id", "imageId", "isUser", "password", "username" },
+                columns: new[] { "Id", "email", "imageId", "isUser", "password", "username" },
                 values: new object[,]
                 {
-                    { new Guid("3a3c754a-07e2-4c14-96db-45cee559a474"), new Guid("a66bf0c0-2c93-492b-9513-186d9644eaf4"), true, "samplepass1", "sampleUser1" },
-                    { new Guid("547a73f9-362d-4ca2-ad7c-65d7cb14d0d7"), new Guid("f58b66d5-fd23-4ff4-9023-f6b79a03f3b2"), true, "samplepass2", "sampleUser2" },
-                    { new Guid("57aec4ab-79d6-4ca5-9a56-10e833d48921"), new Guid("e1960e5b-5c37-40b1-ba14-0af2ad8662cb"), true, "samplepass3", "sampleUser3" },
-                    { new Guid("3534935d-6ed3-4736-9bc7-b21a1417cae1"), new Guid("d8f9fffb-e10b-4356-a12b-f24b4db5d937"), false, "samplepass4", "sampleUser4" },
-                    { new Guid("e4400f56-a926-4d86-b3e9-9ac201f7eca7"), new Guid("0d689427-18d9-4c32-a72c-00155ac31fcf"), false, "samplepass5", "sampleUser5" }
+                    { new Guid("e7146b70-ad4d-4d28-ba0c-c420b18c14cc"), "sampleUser1@mail.com", new Guid("bcf0ffae-1f10-4d24-8baa-84cb11442f52"), true, "c72a944b810cb996c3107ae0a774980f1e4ec1232990a3c62a73c750675bcd5d", "sampleUser1" },
+                    { new Guid("68984eae-1ab5-4c66-8a1d-e0ffb17bda5b"), "sampleUser2@mail.com", new Guid("1713b227-ffb6-4c8e-8247-84be15928f4c"), true, "defd7d850c9632421ba1244bc22642facdc2115c60dbd0d2663b1117ba4f50a9", "sampleUser2" },
+                    { new Guid("d2f23741-7b74-4b39-b28d-42172eb04420"), "sampleUser3@mail.com", new Guid("bcf316fa-dc18-4b8b-9090-f08c476ff85c"), true, "d4481413102ca87dc30943994469caad1ab2de1b869514348b003553bde4d3b1", "sampleUser3" },
+                    { new Guid("22a187d3-9985-4b5d-bcd7-4f6c8843053a"), "sampleUser4@mail.com", new Guid("833fee49-3a76-47c8-b5cf-40c57611f77f"), false, "4d5c81c22882ff79cc1c45031acd9afcd1cf063f9b6d664adb1d33cf4c681807", "sampleUser4" },
+                    { new Guid("888e8504-9287-4ad1-a984-dfe2d91ff32b"), "sampleUser5@mail.com", new Guid("178a0435-7822-42c8-9c7f-9199f9b5a09e"), false, "cc6b98042e62e0c4da7110a42dcd7aaf20ec2bbc250b89923353d39483ef46a4", "sampleUser5" }
                 });
 
             migrationBuilder.InsertData(
                 table: "action",
-                columns: new[] { "Id", "actionType", "description", "name", "organizationId" },
+                columns: new[] { "Id", "actionType", "creationDateTime", "description", "endDateTime", "name", "organizationId", "startDateTime" },
                 values: new object[,]
                 {
-                    { new Guid("a0a29966-1c47-49bd-9f69-5eb5cd367472"), false, "This is a generic action where you sign up to participate", "Race for cure", new Guid("9d339f07-7548-4d66-ad39-4886de3033dd") },
-                    { new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"), true, "This is a generic action where people donate stuff", "Fundraising for children without parents", new Guid("9d339f07-7548-4d66-ad39-4886de3033dd") },
-                    { new Guid("ef83bf0b-fea0-411b-8fdd-1293aee8adb4"), true, "This is another action where people donate stuff", "Another fundraising", new Guid("bade659a-e76d-4bba-bb59-358f293ed262") }
+                    { new Guid("08e37fa3-98c0-4220-b632-987e4c37131a"), false, new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified), "This is a generic action where you sign up to participate", new DateTime(2020, 2, 5, 19, 32, 0, 0, DateTimeKind.Unspecified), "Race for cure", new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"), true, new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified), "This is a generic action where people donate stuff", new DateTime(2020, 2, 5, 19, 32, 0, 0, DateTimeKind.Unspecified), "Fundraising for children without parents", new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("dd9e6842-c122-4eec-aa93-c327fb48532b"), true, new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified), "This is another action where people donate stuff", new DateTime(2020, 2, 5, 19, 32, 0, 0, DateTimeKind.Unspecified), "Another fundraising", new Guid("040fc5b6-f94b-4079-8b98-0298a59ae07f"), new DateTime(2019, 11, 27, 19, 32, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "card",
-                columns: new[] { "Id", "bankName", "dateOfExpiry" },
+                columns: new[] { "Id", "amount", "bankName", "creditCardNumber", "dateOfExpiry" },
                 values: new object[,]
                 {
-                    { new Guid("d89dcfaf-29cf-40a8-b627-5f62a1d507a2"), "Austria Bank", new DateTime(2020, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("a333c0b5-ed74-48b9-905e-7f958ca55dfc"), "Austria Bank", new DateTime(2021, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("0511a552-89cd-41a3-a581-ea931327682d"), "Karntner Ladesbank Raiffeisen", new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("5f6efe01-ecba-4b20-a9ed-6049ae82b776"), "Karntner Sparkasse", new DateTime(2021, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("0fc952ae-13f6-4161-aeb1-b9e040d8dce3"), "Karntner Sparkasse", new DateTime(2020, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { new Guid("bdc3d82a-6616-401a-9050-f908ee557c51"), 55.0, "Austria Bank", "7383940414243444", new DateTime(2020, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("bd6cd9f7-cdbc-40e0-a0e8-ebc03309f615"), 200.0, "Austria Bank", "9303132333435363", new DateTime(2021, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("1d391b65-974c-482e-9084-f85272e12765"), 150.0, "Karntner Ladesbank Raiffeisen", "1222324252627282", new DateTime(2020, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("b34dea03-3805-424a-95c8-c8c777fa4570"), 50.0, "Karntner Sparkasse", "3141516171819202", new DateTime(2021, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("2184a6fe-1ee2-482c-9002-4016fd6375cd"), 100.0, "Karntner Sparkasse", "1234567891011121", new DateTime(2020, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -282,11 +325,11 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "Path" },
                 values: new object[,]
                 {
-                    { new Guid("a66bf0c0-2c93-492b-9513-186d9644eaf4"), "https://i.pinimg.com/originals/df/bd/df/dfbddf7c530ab5f4cd70154409651f9d.jpg" },
-                    { new Guid("f58b66d5-fd23-4ff4-9023-f6b79a03f3b2"), "http://bestdayevereducation.com/uploads/images/FreeVector-Spongebob-Squarepants-Vector.jpg" },
-                    { new Guid("e1960e5b-5c37-40b1-ba14-0af2ad8662cb"), "https://arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/AVA6IKPJNBAS7JZ3CREUNY64K4.jpg" },
-                    { new Guid("d8f9fffb-e10b-4356-a12b-f24b4db5d937"), "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cartoon_Network_2010_logo.svg/2000px-Cartoon_Network_2010_logo.svg.png" },
-                    { new Guid("0d689427-18d9-4c32-a72c-00155ac31fcf"), "https://cdn.vox-cdn.com/thumbor/m6_h4h6uHuJeZCnWTCz7anTlVJA=/0x0:1920x1080/1200x800/filters:focal(807x387:1113x693)/cdn.vox-cdn.com/uploads/chorus_image/image/60720529/disneyplus.0.4.jpg" }
+                    { new Guid("bcf0ffae-1f10-4d24-8baa-84cb11442f52"), "https://i.pinimg.com/originals/df/bd/df/dfbddf7c530ab5f4cd70154409651f9d.jpg" },
+                    { new Guid("1713b227-ffb6-4c8e-8247-84be15928f4c"), "http://bestdayevereducation.com/uploads/images/FreeVector-Spongebob-Squarepants-Vector.jpg" },
+                    { new Guid("bcf316fa-dc18-4b8b-9090-f08c476ff85c"), "https://arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/AVA6IKPJNBAS7JZ3CREUNY64K4.jpg" },
+                    { new Guid("833fee49-3a76-47c8-b5cf-40c57611f77f"), "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cartoon_Network_2010_logo.svg/2000px-Cartoon_Network_2010_logo.svg.png" },
+                    { new Guid("178a0435-7822-42c8-9c7f-9199f9b5a09e"), "https://cdn.vox-cdn.com/thumbor/m6_h4h6uHuJeZCnWTCz7anTlVJA=/0x0:1920x1080/1200x800/filters:focal(807x387:1113x693)/cdn.vox-cdn.com/uploads/chorus_image/image/60720529/disneyplus.0.4.jpg" }
                 });
 
             migrationBuilder.InsertData(
@@ -294,8 +337,8 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "description", "name", "userDonatedId", "value" },
                 values: new object[,]
                 {
-                    { new Guid("0d8c0f93-93a0-424a-9330-97be4bfd636b"), "A ball for playing basketball", "Basketball", new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1"), 50 },
-                    { new Guid("4cc52e84-307c-454c-bf48-d2e44f042e61"), "Some spare makeup I donate", "Makeup", new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8"), 150 }
+                    { new Guid("b5e6b0e9-b052-434e-bef4-04215e9d687a"), "A ball for playing basketball", "Basketball", new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af"), 50 },
+                    { new Guid("1cf47408-cc50-4162-83be-e27030f44451"), "Some spare makeup I donate", "Makeup", new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09"), 150 }
                 });
 
             migrationBuilder.InsertData(
@@ -303,9 +346,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "actionId", "itemId" },
                 values: new object[,]
                 {
-                    { new Guid("bd4faa4b-ad4f-4bb4-9740-6c8369c6bff3"), new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"), new Guid("0d8c0f93-93a0-424a-9330-97be4bfd636b") },
-                    { new Guid("aec3727b-f38f-4f00-ae47-16e359ce7f94"), new Guid("ef83bf0b-fea0-411b-8fdd-1293aee8adb4"), new Guid("4cc52e84-307c-454c-bf48-d2e44f042e61") },
-                    { new Guid("fbb21596-b09d-409c-812b-785912d57d33"), new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"), new Guid("0d8c0f93-93a0-424a-9330-97be4bfd636b") }
+                    { new Guid("ba187e42-7178-44f9-a63a-1d57658ae295"), new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"), new Guid("b5e6b0e9-b052-434e-bef4-04215e9d687a") },
+                    { new Guid("038a7998-a85e-4bb0-9774-e1e9f631cf2b"), new Guid("dd9e6842-c122-4eec-aa93-c327fb48532b"), new Guid("1cf47408-cc50-4162-83be-e27030f44451") },
+                    { new Guid("450a2c0f-55e9-4c85-b6f1-02b7e1536b45"), new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"), new Guid("b5e6b0e9-b052-434e-bef4-04215e9d687a") }
                 });
 
             migrationBuilder.InsertData(
@@ -313,11 +356,11 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "message", "organizationReceiverId", "organizationSenderId", "sendingTime", "userReceiverId", "userSenderId" },
                 values: new object[,]
                 {
-                    { new Guid("5129e70f-d6bc-48a4-bc18-2ae38d449f0c"), "May I participate in your action :)", new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 11, 20, 22, 24, 30, 0, DateTimeKind.Unspecified), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("32a708be-c99e-4f2f-8d43-d15ecb9e5c10"), "Of course you can. All the best.", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"), new DateTime(2019, 11, 20, 23, 25, 30, 0, DateTimeKind.Unspecified), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1"), new Guid("00000000-0000-0000-0000-000000000000") },
-                    { new Guid("2fd75fd0-bc70-4d5e-b220-55420de49466"), "How are you my friend?", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 20, 0, 0, 0, DateTimeKind.Unspecified), new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c"), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") },
-                    { new Guid("44497540-08e1-4c82-bf00-fdb5fe07af53"), "All is well, thank you, and you?", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8"), new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c") },
-                    { new Guid("1b790cd1-13bd-4c3e-b3b2-b36af8f479c2"), "I am fine, thanks", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 22, 0, 0, 0, DateTimeKind.Unspecified), new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c"), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") }
+                    { new Guid("803e9b62-4b01-421a-8d3e-963e7c14e9dd"), "May I participate in your action :)", new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 11, 20, 22, 24, 30, 0, DateTimeKind.Unspecified), new Guid("00000000-0000-0000-0000-000000000000"), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("3ad3d982-1bd7-4a98-9559-e1d45f9846a5"), "Of course you can. All the best.", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new DateTime(2019, 11, 20, 23, 25, 30, 0, DateTimeKind.Unspecified), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af"), new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("e2b7a97c-8284-4643-bde8-b3f079ccec47"), "How are you my friend?", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 20, 0, 0, 0, DateTimeKind.Unspecified), new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8"), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") },
+                    { new Guid("51038d49-7362-420b-a04a-279790b454d9"), "All is well, thank you, and you?", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 21, 0, 0, 0, DateTimeKind.Unspecified), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09"), new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8") },
+                    { new Guid("d247e17e-f121-49b9-ba31-954a818b3fdc"), "I am fine, thanks", new Guid("00000000-0000-0000-0000-000000000000"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 10, 15, 22, 0, 0, 0, DateTimeKind.Unspecified), new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8"), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") }
                 });
 
             migrationBuilder.InsertData(
@@ -325,8 +368,8 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "UserAccount", "creditCardNumber", "dateOfFounding", "description", "name" },
                 values: new object[,]
                 {
-                    { new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"), new Guid("3534935d-6ed3-4736-9bc7-b21a1417cae1"), new Guid("a333c0b5-ed74-48b9-905e-7f958ca55dfc"), new DateTime(2015, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "This is a sample organization for doing something which is good", "CharityOrg1" },
-                    { new Guid("bade659a-e76d-4bba-bb59-358f293ed262"), new Guid("e4400f56-a926-4d86-b3e9-9ac201f7eca7"), new Guid("d89dcfaf-29cf-40a8-b627-5f62a1d507a2"), new DateTime(2019, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "This organization does charity actions which are great!", "CharityOrg2" }
+                    { new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new Guid("22a187d3-9985-4b5d-bcd7-4f6c8843053a"), new Guid("bd6cd9f7-cdbc-40e0-a0e8-ebc03309f615"), new DateTime(2015, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), "This is a sample organization for doing something which is good", "CharityOrg1" },
+                    { new Guid("040fc5b6-f94b-4079-8b98-0298a59ae07f"), new Guid("888e8504-9287-4ad1-a984-dfe2d91ff32b"), new Guid("bdc3d82a-6616-401a-9050-f908ee557c51"), new DateTime(2019, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "This organization does charity actions which are great!", "CharityOrg2" }
                 });
 
             migrationBuilder.InsertData(
@@ -334,9 +377,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "amount", "organizationReceiverId", "userSenderId" },
                 values: new object[,]
                 {
-                    { new Guid("22a6c3d0-0682-43b8-b226-bfb92ab9a816"), 100.0, new Guid("bade659a-e76d-4bba-bb59-358f293ed262"), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("31a2ce51-5f23-4981-a89f-dbae81664e9e"), 100.0, new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("9026f6cb-3f73-4d1e-ac83-75625a4f1a65"), 100.0, new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") }
+                    { new Guid("346d4e57-4185-4d20-8315-a487f54bb378"), 100.0, new Guid("040fc5b6-f94b-4079-8b98-0298a59ae07f"), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("af9e127a-329c-4c7b-a28c-bb9c4193d6a0"), 100.0, new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("e5e4fbcd-4dce-419b-9f8f-f269fcd1fe3f"), 100.0, new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") }
                 });
 
             migrationBuilder.InsertData(
@@ -344,9 +387,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "actionId", "message", "userId" },
                 values: new object[,]
                 {
-                    { new Guid("fb1c3b7c-35b0-425e-9622-6e3d353b29be"), new Guid("ef83bf0b-fea0-411b-8fdd-1293aee8adb4"), "Normally, I did as well.", new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c") },
-                    { new Guid("8316ddae-d339-48a1-93e7-20f006e4b343"), new Guid("a0a29966-1c47-49bd-9f69-5eb5cd367472"), "I just did something in this action", new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("001a3141-0756-4cf2-aab0-d5b4a22ce612"), new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"), "I did something too", new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") }
+                    { new Guid("5c4f4b15-f208-4aa1-8d80-58ea901b10ce"), new Guid("dd9e6842-c122-4eec-aa93-c327fb48532b"), "Normally, I did as well.", new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8") },
+                    { new Guid("fc46cac9-f244-4cd4-a986-8b2a0700680c"), new Guid("08e37fa3-98c0-4220-b632-987e4c37131a"), "I just did something in this action", new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("229379a4-d697-498b-a9af-5bf4e645d88a"), new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"), "I did something too", new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") }
                 });
 
             migrationBuilder.InsertData(
@@ -354,9 +397,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "commentText", "commented", "liked", "postId", "userReactedId" },
                 values: new object[,]
                 {
-                    { new Guid("534659c1-ef47-40c4-bd96-7697eda707cd"), null, false, true, new Guid("8316ddae-d339-48a1-93e7-20f006e4b343"), new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c") },
-                    { new Guid("df747e26-b7aa-408d-8079-3014fd5cddef"), "Glad you did that!", true, true, new Guid("001a3141-0756-4cf2-aab0-d5b4a22ce612"), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("22f78e7a-0d0d-4cc3-939b-352e4666c848"), null, false, true, new Guid("fb1c3b7c-35b0-425e-9622-6e3d353b29be"), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") }
+                    { new Guid("c9d9c4eb-dce3-4867-9932-e3f37b15933f"), null, false, true, new Guid("fc46cac9-f244-4cd4-a986-8b2a0700680c"), new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8") },
+                    { new Guid("559053ca-1373-4c63-94a5-f547e0713fb2"), "Glad you did that!", true, true, new Guid("229379a4-d697-498b-a9af-5bf4e645d88a"), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("5f411452-0340-482c-98a2-cbdffd04939e"), null, false, true, new Guid("5c4f4b15-f208-4aa1-8d80-58ea901b10ce"), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") }
                 });
 
             migrationBuilder.InsertData(
@@ -364,9 +407,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "UserAccount", "creditCardId", "dateOfBirth", "firstName", "gender", "lastName" },
                 values: new object[,]
                 {
-                    { new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8"), new Guid("547a73f9-362d-4ca2-ad7c-65d7cb14d0d7"), new Guid("5f6efe01-ecba-4b20-a9ed-6049ae82b776"), new DateTime(1980, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "John", "F", "Doe" },
-                    { new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1"), new Guid("3a3c754a-07e2-4c14-96db-45cee559a474"), new Guid("0fc952ae-13f6-4161-aeb1-b9e040d8dce3"), new DateTime(1997, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Foo", "M", "Bar" },
-                    { new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c"), new Guid("57aec4ab-79d6-4ca5-9a56-10e833d48921"), new Guid("0511a552-89cd-41a3-a581-ea931327682d"), new DateTime(1970, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nicholas", "M", "Cage" }
+                    { new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09"), new Guid("68984eae-1ab5-4c66-8a1d-e0ffb17bda5b"), new Guid("b34dea03-3805-424a-95c8-c8c777fa4570"), new DateTime(1980, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "John", "F", "Doe" },
+                    { new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af"), new Guid("e7146b70-ad4d-4d28-ba0c-c420b18c14cc"), new Guid("2184a6fe-1ee2-482c-9002-4016fd6375cd"), new DateTime(1997, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "Foo", "M", "Bar" },
+                    { new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8"), new Guid("d2f23741-7b74-4b39-b28d-42172eb04420"), new Guid("1d391b65-974c-482e-9084-f85272e12765"), new DateTime(1970, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nicholas", "M", "Cage" }
                 });
 
             migrationBuilder.InsertData(
@@ -374,9 +417,9 @@ namespace CharityData.Migrations
                 columns: new[] { "Id", "actionId", "userId" },
                 values: new object[,]
                 {
-                    { new Guid("d0581979-1450-4d2b-9807-e54ef106416a"), new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"), new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8") },
-                    { new Guid("e5c3548c-2dfe-4faa-b4bc-05997e874bde"), new Guid("a0a29966-1c47-49bd-9f69-5eb5cd367472"), new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1") },
-                    { new Guid("a9b7835d-1d6e-4823-8010-a120eecafd9d"), new Guid("ef83bf0b-fea0-411b-8fdd-1293aee8adb4"), new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c") }
+                    { new Guid("cc44e437-575a-42eb-ab71-8a4d23991199"), new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"), new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09") },
+                    { new Guid("42f92044-967c-4df1-af5d-673fc63c37ae"), new Guid("08e37fa3-98c0-4220-b632-987e4c37131a"), new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af") },
+                    { new Guid("7e58c9db-4f5a-42d4-9c30-4c3508e18b40"), new Guid("dd9e6842-c122-4eec-aa93-c327fb48532b"), new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8") }
                 });
         }
 
@@ -385,227 +428,227 @@ namespace CharityData.Migrations
             migrationBuilder.DeleteData(
                 table: "account",
                 keyColumn: "Id",
-                keyValue: new Guid("3534935d-6ed3-4736-9bc7-b21a1417cae1"));
+                keyValue: new Guid("22a187d3-9985-4b5d-bcd7-4f6c8843053a"));
 
             migrationBuilder.DeleteData(
                 table: "account",
                 keyColumn: "Id",
-                keyValue: new Guid("3a3c754a-07e2-4c14-96db-45cee559a474"));
+                keyValue: new Guid("68984eae-1ab5-4c66-8a1d-e0ffb17bda5b"));
 
             migrationBuilder.DeleteData(
                 table: "account",
                 keyColumn: "Id",
-                keyValue: new Guid("547a73f9-362d-4ca2-ad7c-65d7cb14d0d7"));
+                keyValue: new Guid("888e8504-9287-4ad1-a984-dfe2d91ff32b"));
 
             migrationBuilder.DeleteData(
                 table: "account",
                 keyColumn: "Id",
-                keyValue: new Guid("57aec4ab-79d6-4ca5-9a56-10e833d48921"));
+                keyValue: new Guid("d2f23741-7b74-4b39-b28d-42172eb04420"));
 
             migrationBuilder.DeleteData(
                 table: "account",
                 keyColumn: "Id",
-                keyValue: new Guid("e4400f56-a926-4d86-b3e9-9ac201f7eca7"));
+                keyValue: new Guid("e7146b70-ad4d-4d28-ba0c-c420b18c14cc"));
 
             migrationBuilder.DeleteData(
                 table: "action",
                 keyColumn: "Id",
-                keyValue: new Guid("3af982da-a061-4cfc-84b9-1ecb6d929342"));
+                keyValue: new Guid("08e37fa3-98c0-4220-b632-987e4c37131a"));
 
             migrationBuilder.DeleteData(
                 table: "action",
                 keyColumn: "Id",
-                keyValue: new Guid("a0a29966-1c47-49bd-9f69-5eb5cd367472"));
+                keyValue: new Guid("cfa621ba-af9a-4841-91c3-faf453759c25"));
 
             migrationBuilder.DeleteData(
                 table: "action",
                 keyColumn: "Id",
-                keyValue: new Guid("ef83bf0b-fea0-411b-8fdd-1293aee8adb4"));
+                keyValue: new Guid("dd9e6842-c122-4eec-aa93-c327fb48532b"));
 
             migrationBuilder.DeleteData(
                 table: "card",
                 keyColumn: "Id",
-                keyValue: new Guid("0511a552-89cd-41a3-a581-ea931327682d"));
+                keyValue: new Guid("1d391b65-974c-482e-9084-f85272e12765"));
 
             migrationBuilder.DeleteData(
                 table: "card",
                 keyColumn: "Id",
-                keyValue: new Guid("0fc952ae-13f6-4161-aeb1-b9e040d8dce3"));
+                keyValue: new Guid("2184a6fe-1ee2-482c-9002-4016fd6375cd"));
 
             migrationBuilder.DeleteData(
                 table: "card",
                 keyColumn: "Id",
-                keyValue: new Guid("5f6efe01-ecba-4b20-a9ed-6049ae82b776"));
+                keyValue: new Guid("b34dea03-3805-424a-95c8-c8c777fa4570"));
 
             migrationBuilder.DeleteData(
                 table: "card",
                 keyColumn: "Id",
-                keyValue: new Guid("a333c0b5-ed74-48b9-905e-7f958ca55dfc"));
+                keyValue: new Guid("bd6cd9f7-cdbc-40e0-a0e8-ebc03309f615"));
 
             migrationBuilder.DeleteData(
                 table: "card",
                 keyColumn: "Id",
-                keyValue: new Guid("d89dcfaf-29cf-40a8-b627-5f62a1d507a2"));
+                keyValue: new Guid("bdc3d82a-6616-401a-9050-f908ee557c51"));
 
             migrationBuilder.DeleteData(
                 table: "image",
                 keyColumn: "Id",
-                keyValue: new Guid("0d689427-18d9-4c32-a72c-00155ac31fcf"));
+                keyValue: new Guid("1713b227-ffb6-4c8e-8247-84be15928f4c"));
 
             migrationBuilder.DeleteData(
                 table: "image",
                 keyColumn: "Id",
-                keyValue: new Guid("a66bf0c0-2c93-492b-9513-186d9644eaf4"));
+                keyValue: new Guid("178a0435-7822-42c8-9c7f-9199f9b5a09e"));
 
             migrationBuilder.DeleteData(
                 table: "image",
                 keyColumn: "Id",
-                keyValue: new Guid("d8f9fffb-e10b-4356-a12b-f24b4db5d937"));
+                keyValue: new Guid("833fee49-3a76-47c8-b5cf-40c57611f77f"));
 
             migrationBuilder.DeleteData(
                 table: "image",
                 keyColumn: "Id",
-                keyValue: new Guid("e1960e5b-5c37-40b1-ba14-0af2ad8662cb"));
+                keyValue: new Guid("bcf0ffae-1f10-4d24-8baa-84cb11442f52"));
 
             migrationBuilder.DeleteData(
                 table: "image",
                 keyColumn: "Id",
-                keyValue: new Guid("f58b66d5-fd23-4ff4-9023-f6b79a03f3b2"));
+                keyValue: new Guid("bcf316fa-dc18-4b8b-9090-f08c476ff85c"));
 
             migrationBuilder.DeleteData(
                 table: "item",
                 keyColumn: "Id",
-                keyValue: new Guid("0d8c0f93-93a0-424a-9330-97be4bfd636b"));
+                keyValue: new Guid("1cf47408-cc50-4162-83be-e27030f44451"));
 
             migrationBuilder.DeleteData(
                 table: "item",
                 keyColumn: "Id",
-                keyValue: new Guid("4cc52e84-307c-454c-bf48-d2e44f042e61"));
+                keyValue: new Guid("b5e6b0e9-b052-434e-bef4-04215e9d687a"));
 
             migrationBuilder.DeleteData(
                 table: "itemInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("aec3727b-f38f-4f00-ae47-16e359ce7f94"));
+                keyValue: new Guid("038a7998-a85e-4bb0-9774-e1e9f631cf2b"));
 
             migrationBuilder.DeleteData(
                 table: "itemInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("bd4faa4b-ad4f-4bb4-9740-6c8369c6bff3"));
+                keyValue: new Guid("450a2c0f-55e9-4c85-b6f1-02b7e1536b45"));
 
             migrationBuilder.DeleteData(
                 table: "itemInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("fbb21596-b09d-409c-812b-785912d57d33"));
+                keyValue: new Guid("ba187e42-7178-44f9-a63a-1d57658ae295"));
 
             migrationBuilder.DeleteData(
                 table: "message",
                 keyColumn: "Id",
-                keyValue: new Guid("1b790cd1-13bd-4c3e-b3b2-b36af8f479c2"));
+                keyValue: new Guid("3ad3d982-1bd7-4a98-9559-e1d45f9846a5"));
 
             migrationBuilder.DeleteData(
                 table: "message",
                 keyColumn: "Id",
-                keyValue: new Guid("2fd75fd0-bc70-4d5e-b220-55420de49466"));
+                keyValue: new Guid("51038d49-7362-420b-a04a-279790b454d9"));
 
             migrationBuilder.DeleteData(
                 table: "message",
                 keyColumn: "Id",
-                keyValue: new Guid("32a708be-c99e-4f2f-8d43-d15ecb9e5c10"));
+                keyValue: new Guid("803e9b62-4b01-421a-8d3e-963e7c14e9dd"));
 
             migrationBuilder.DeleteData(
                 table: "message",
                 keyColumn: "Id",
-                keyValue: new Guid("44497540-08e1-4c82-bf00-fdb5fe07af53"));
+                keyValue: new Guid("d247e17e-f121-49b9-ba31-954a818b3fdc"));
 
             migrationBuilder.DeleteData(
                 table: "message",
                 keyColumn: "Id",
-                keyValue: new Guid("5129e70f-d6bc-48a4-bc18-2ae38d449f0c"));
+                keyValue: new Guid("e2b7a97c-8284-4643-bde8-b3f079ccec47"));
 
             migrationBuilder.DeleteData(
                 table: "organization",
                 keyColumn: "Id",
-                keyValue: new Guid("9d339f07-7548-4d66-ad39-4886de3033dd"));
+                keyValue: new Guid("040fc5b6-f94b-4079-8b98-0298a59ae07f"));
 
             migrationBuilder.DeleteData(
                 table: "organization",
                 keyColumn: "Id",
-                keyValue: new Guid("bade659a-e76d-4bba-bb59-358f293ed262"));
+                keyValue: new Guid("f1a17f5b-f1f0-49eb-a3d3-439e72f90702"));
 
             migrationBuilder.DeleteData(
                 table: "payment",
                 keyColumn: "Id",
-                keyValue: new Guid("22a6c3d0-0682-43b8-b226-bfb92ab9a816"));
+                keyValue: new Guid("346d4e57-4185-4d20-8315-a487f54bb378"));
 
             migrationBuilder.DeleteData(
                 table: "payment",
                 keyColumn: "Id",
-                keyValue: new Guid("31a2ce51-5f23-4981-a89f-dbae81664e9e"));
+                keyValue: new Guid("af9e127a-329c-4c7b-a28c-bb9c4193d6a0"));
 
             migrationBuilder.DeleteData(
                 table: "payment",
                 keyColumn: "Id",
-                keyValue: new Guid("9026f6cb-3f73-4d1e-ac83-75625a4f1a65"));
+                keyValue: new Guid("e5e4fbcd-4dce-419b-9f8f-f269fcd1fe3f"));
 
             migrationBuilder.DeleteData(
                 table: "profilePosts",
                 keyColumn: "Id",
-                keyValue: new Guid("001a3141-0756-4cf2-aab0-d5b4a22ce612"));
+                keyValue: new Guid("229379a4-d697-498b-a9af-5bf4e645d88a"));
 
             migrationBuilder.DeleteData(
                 table: "profilePosts",
                 keyColumn: "Id",
-                keyValue: new Guid("8316ddae-d339-48a1-93e7-20f006e4b343"));
+                keyValue: new Guid("5c4f4b15-f208-4aa1-8d80-58ea901b10ce"));
 
             migrationBuilder.DeleteData(
                 table: "profilePosts",
                 keyColumn: "Id",
-                keyValue: new Guid("fb1c3b7c-35b0-425e-9622-6e3d353b29be"));
+                keyValue: new Guid("fc46cac9-f244-4cd4-a986-8b2a0700680c"));
 
             migrationBuilder.DeleteData(
                 table: "reactionsToPosts",
                 keyColumn: "Id",
-                keyValue: new Guid("22f78e7a-0d0d-4cc3-939b-352e4666c848"));
+                keyValue: new Guid("559053ca-1373-4c63-94a5-f547e0713fb2"));
 
             migrationBuilder.DeleteData(
                 table: "reactionsToPosts",
                 keyColumn: "Id",
-                keyValue: new Guid("534659c1-ef47-40c4-bd96-7697eda707cd"));
+                keyValue: new Guid("5f411452-0340-482c-98a2-cbdffd04939e"));
 
             migrationBuilder.DeleteData(
                 table: "reactionsToPosts",
                 keyColumn: "Id",
-                keyValue: new Guid("df747e26-b7aa-408d-8079-3014fd5cddef"));
+                keyValue: new Guid("c9d9c4eb-dce3-4867-9932-e3f37b15933f"));
 
             migrationBuilder.DeleteData(
                 table: "user",
                 keyColumn: "Id",
-                keyValue: new Guid("02eefb58-88d5-466d-af8b-12faa98aecd1"));
+                keyValue: new Guid("3c791c17-e88e-4f49-a287-2e9fc1f802af"));
 
             migrationBuilder.DeleteData(
                 table: "user",
                 keyColumn: "Id",
-                keyValue: new Guid("26482449-1b84-44ab-8ac5-27f8f1634f8c"));
+                keyValue: new Guid("ee1c06e6-7537-4d3a-9084-27e2653e26b8"));
 
             migrationBuilder.DeleteData(
                 table: "user",
                 keyColumn: "Id",
-                keyValue: new Guid("34a35df2-22c7-40f6-b302-caa4af4fece8"));
+                keyValue: new Guid("f2de65ee-3520-47ff-866f-4c4d02e0cc09"));
 
             migrationBuilder.DeleteData(
                 table: "userParticipatingInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("a9b7835d-1d6e-4823-8010-a120eecafd9d"));
+                keyValue: new Guid("42f92044-967c-4df1-af5d-673fc63c37ae"));
 
             migrationBuilder.DeleteData(
                 table: "userParticipatingInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("d0581979-1450-4d2b-9807-e54ef106416a"));
+                keyValue: new Guid("7e58c9db-4f5a-42d4-9c30-4c3508e18b40"));
 
             migrationBuilder.DeleteData(
                 table: "userParticipatingInAction",
                 keyColumn: "Id",
-                keyValue: new Guid("e5c3548c-2dfe-4faa-b4bc-05997e874bde"));
+                keyValue: new Guid("cc44e437-575a-42eb-ab71-8a4d23991199"));
 
             migrationBuilder.DropColumn(
                 name: "gender",
@@ -614,6 +657,38 @@ namespace CharityData.Migrations
             migrationBuilder.DropColumn(
                 name: "commentText",
                 table: "reactionsToPosts");
+
+            migrationBuilder.DropColumn(
+                name: "amount",
+                table: "card");
+
+            migrationBuilder.DropColumn(
+                name: "creditCardNumber",
+                table: "card");
+
+            migrationBuilder.DropColumn(
+                name: "creationDateTime",
+                table: "action");
+
+            migrationBuilder.DropColumn(
+                name: "endDateTime",
+                table: "action");
+
+            migrationBuilder.DropColumn(
+                name: "startDateTime",
+                table: "action");
+
+            migrationBuilder.DropColumn(
+                name: "email",
+                table: "account");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "password",
+                table: "account",
+                maxLength: 50,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 80);
 
             migrationBuilder.InsertData(
                 table: "account",

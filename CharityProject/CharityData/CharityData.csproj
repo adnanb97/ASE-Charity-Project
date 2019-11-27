@@ -15,6 +15,9 @@
     <Compile Remove="Migrations\20191120011340_Adding migration and seeders for images &amp; accounts.cs" />
     <Compile Remove="Migrations\20191120011652_Adding migration and seeders for images &amp; accounts.cs" />
     <Compile Remove="Migrations\20191120221037_Adding migration and seeders for all models.cs" />
+    <Compile Remove="Migrations\20191121135328_Fixed migration for Post Reaction %28no text when commenting%29 and User %28Gender%29.cs" />
+    <Compile Remove="Migrations\20191127182643_Fixed models and added password hashing.cs" />
+    <Compile Remove="Migrations\20191127182812_Fixed models and added password hashing.cs" />
   </ItemGroup>
 
   <ItemGroup>
