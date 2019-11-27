@@ -18,5 +18,10 @@ namespace CharityData.Models
         [Required]
         [StringLength(50, ErrorMessage = "Bank name cannot be longer than 50 characters.")]
         public string bankName { get; set; }
+
+        public double amount { get; set; }
+
+        [Required]
+        public string creditCardNumber { get; set; }
     }
 }

@@ -20,8 +20,10 @@ namespace CharityData.Models
         public string username { get; set; }
 
         [Required, DataType(DataType.Password)]
-        [StringLength(50, ErrorMessage = "Password cannot be longer than 50 characters.")]
+        [StringLength(80, ErrorMessage = "Password cannot be longer than 80 characters.")]
         public string password { get; set; }
+
+        public string email { get; set; }
 
         public Guid imageId { get; set; } 
 

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CharityProject
@@ -50,21 +52,41 @@ namespace CharityProject
             #endregion
 
             #region ArrayOfAccounts
+
             Account[] arrayOfAccounts = new Account[5];
-            arrayOfAccounts[0] = new Account { Id = Guid.NewGuid(), username = "sampleUser1", password = "samplepass1", isUser = true, imageId = arrayOfImages[0].Id };
-            arrayOfAccounts[1] = new Account { Id = Guid.NewGuid(), username = "sampleUser2", password = "samplepass2", isUser = true, imageId = arrayOfImages[1].Id };
-            arrayOfAccounts[2] = new Account { Id = Guid.NewGuid(), username = "sampleUser3", password = "samplepass3", isUser = true, imageId = arrayOfImages[2].Id };
-            arrayOfAccounts[3] = new Account { Id = Guid.NewGuid(), username = "sampleUser4", password = "samplepass4", isUser = false, imageId = arrayOfImages[3].Id };
-            arrayOfAccounts[4] = new Account { Id = Guid.NewGuid(), username = "sampleUser5", password = "samplepass5", isUser = false, imageId = arrayOfImages[4].Id };
+            using (var sha256 = SHA256.Create())
+            {
+                // Send a sample text to hash.  
+                var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes("samplepass1"));
+                var pass2 = sha256.ComputeHash(Encoding.UTF8.GetBytes("samplepass2"));
+                var pass3 = sha256.ComputeHash(Encoding.UTF8.GetBytes("samplepass3"));
+                var pass4 = sha256.ComputeHash(Encoding.UTF8.GetBytes("samplepass4"));
+                var pass5 = sha256.ComputeHash(Encoding.UTF8.GetBytes("samplepass5"));
+                // Get the hashed string.  
+                var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                var hash2 = BitConverter.ToString(pass2).Replace("-", "").ToLower();
+                var hash3 = BitConverter.ToString(pass3).Replace("-", "").ToLower();
+                var hash4 = BitConverter.ToString(pass4).Replace("-", "").ToLower();
+                var hash5 = BitConverter.ToString(pass5).Replace("-", "").ToLower();
+
+                // Print the string.   
+                // Console.WriteLine(hash);
+
+                arrayOfAccounts[0] = new Account { Id = Guid.NewGuid(), username = "sampleUser1", password = hash1, email = "sampleUser1@mail.com", isUser = true, imageId = arrayOfImages[0].Id };
+                arrayOfAccounts[1] = new Account { Id = Guid.NewGuid(), username = "sampleUser2", password = hash2, email = "sampleUser2@mail.com", isUser = true, imageId = arrayOfImages[1].Id };
+                arrayOfAccounts[2] = new Account { Id = Guid.NewGuid(), username = "sampleUser3", password = hash3, email = "sampleUser3@mail.com", isUser = true, imageId = arrayOfImages[2].Id };
+                arrayOfAccounts[3] = new Account { Id = Guid.NewGuid(), username = "sampleUser4", password = hash4, email = "sampleUser4@mail.com", isUser = false, imageId = arrayOfImages[3].Id };
+                arrayOfAccounts[4] = new Account { Id = Guid.NewGuid(), username = "sampleUser5", password = hash5, email = "sampleUser5@mail.com", isUser = false, imageId = arrayOfImages[4].Id };
+            }
             #endregion
 
             #region ArrayOfCards
             Card[] arrayOfCreditCard = new Card[5];
-            arrayOfCreditCard[0] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Sparkasse", dateOfExpiry = new DateTime(2020, 5, 15) };
-            arrayOfCreditCard[1] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Sparkasse", dateOfExpiry = new DateTime(2021, 7, 20) };
-            arrayOfCreditCard[2] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Ladesbank Raiffeisen", dateOfExpiry = new DateTime(2020, 2, 20) };
-            arrayOfCreditCard[3] = new Card { Id = Guid.NewGuid(), bankName = "Austria Bank", dateOfExpiry = new DateTime(2021, 1, 15) };
-            arrayOfCreditCard[4] = new Card { Id = Guid.NewGuid(), bankName = "Austria Bank", dateOfExpiry = new DateTime(2020, 3, 14) };
+            arrayOfCreditCard[0] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Sparkasse", dateOfExpiry = new DateTime(2020, 5, 15), amount = 100, creditCardNumber = "1234567891011121" };
+            arrayOfCreditCard[1] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Sparkasse", dateOfExpiry = new DateTime(2021, 7, 20), amount = 50,  creditCardNumber = "3141516171819202"};
+            arrayOfCreditCard[2] = new Card { Id = Guid.NewGuid(), bankName = "Karntner Ladesbank Raiffeisen", dateOfExpiry = new DateTime(2020, 2, 20), amount = 150, creditCardNumber = "1222324252627282" };
+            arrayOfCreditCard[3] = new Card { Id = Guid.NewGuid(), bankName = "Austria Bank", dateOfExpiry = new DateTime(2021, 1, 15), amount = 200, creditCardNumber = "9303132333435363" };
+            arrayOfCreditCard[4] = new Card { Id = Guid.NewGuid(), bankName = "Austria Bank", dateOfExpiry = new DateTime(2020, 3, 14), amount = 55,  creditCardNumber = "7383940414243444" };
             #endregion
 
             #region ArrayOfUsers
@@ -82,9 +104,9 @@ namespace CharityProject
 
             #region ArrayOfActions
             CharityData.Models.Action[] arrayOfActions = new CharityData.Models.Action[3];
-            arrayOfActions[0] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = false, description = "This is a generic action where you sign up to participate", name = "Race for cure", organizationId = arrayOfOrganizations[0].Id };
-            arrayOfActions[1] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is a generic action where people donate stuff", name = "Fundraising for children without parents", organizationId = arrayOfOrganizations[0].Id };
-            arrayOfActions[2] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is another action where people donate stuff", name = "Another fundraising", organizationId = arrayOfOrganizations[1].Id };
+            arrayOfActions[0] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = false, description = "This is a generic action where you sign up to participate", name = "Race for cure", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)};
+            arrayOfActions[1] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is a generic action where people donate stuff", name = "Fundraising for children without parents", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
+            arrayOfActions[2] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is another action where people donate stuff", name = "Another fundraising", organizationId = arrayOfOrganizations[1].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
             #endregion
 
             #region ArrayOfItems
