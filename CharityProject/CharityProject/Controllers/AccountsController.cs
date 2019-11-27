@@ -80,5 +80,49 @@ namespace CharityProject.Controllers
             HttpContext.SignOutAsync();
             return RedirectToAction("Index");
         }
+
+        [Route("Create")]
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Route("Create")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id, username, password, isUser")] Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                account.Id = Guid.NewGuid();
+                account.isUser = true;
+                _context.Add(account);
+
+                string userId = HttpContext.Session.GetString("registrationId");
+                string userFirstName = HttpContext.Session.GetString("registrationFirstName");
+                string userLastName = HttpContext.Session.GetString("registrationLastName");
+                string userGender = HttpContext.Session.GetString("registrationGender");
+                string userDateOfBirth = HttpContext.Session.GetString("registrationBirthday");
+
+                User user = new User();
+                user.Id = Guid.Parse(userId);
+                user.UserAccount = account.Id;
+                user.firstName = userFirstName;
+                user.lastName = userLastName;
+                user.gender = Char.Parse(userGender);
+                user.dateOfBirth = DateTime.Parse(userDateOfBirth);
+                _context.Add<User>(user);
+
+                HttpContext.Session.Remove("registrationId");
+                HttpContext.Session.Remove("registrationFirstName");
+                HttpContext.Session.Remove("registrationLastName");
+                HttpContext.Session.Remove("registrationGender");
+                HttpContext.Session.Remove("registrationBirthday");
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
     }
 }
