@@ -88,5 +88,123 @@ namespace CharityProject.Controllers
             HttpContext.SignOutAsync();
             return RedirectToAction("Index");
         }
+
+        [Route("CreateUserAccount")]
+        [HttpGet]
+        public IActionResult CreateUser()
+        {
+            return View("CreateUser");
+        }
+
+        [Route("CreateUserAccount")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!UsernameExists(account.username))
+                {
+                    account.Id = Guid.NewGuid();
+                    account.isUser = true;
+                    var sha256 = SHA256.Create();
+                    var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes(account.password));
+                    var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                    account.password = hash1;
+                    _context.Add(account);
+
+                    string userId = HttpContext.Session.GetString("registrationId");
+                    string userFirstName = HttpContext.Session.GetString("registrationFirstName");
+                    string userLastName = HttpContext.Session.GetString("registrationLastName");
+                    string userGender = HttpContext.Session.GetString("registrationGender");
+                    string userDateOfBirth = HttpContext.Session.GetString("registrationBirthday");
+
+                    User user = new User();
+                    user.Id = Guid.Parse(userId);
+                    user.UserAccount = account.Id;
+                    user.firstName = userFirstName;
+                    user.lastName = userLastName;
+                    user.gender = Char.Parse(userGender);
+                    user.dateOfBirth = DateTime.Parse(userDateOfBirth);
+                    _context.Add<User>(user);
+
+                    HttpContext.Session.Remove("registrationId");
+                    HttpContext.Session.Remove("registrationFirstName");
+                    HttpContext.Session.Remove("registrationLastName");
+                    HttpContext.Session.Remove("registrationGender");
+                    HttpContext.Session.Remove("registrationBirthday");
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Username already exists, please try again.");
+                    return View("~/Views/Accounts/CreateUser.cshtml");
+
+                }
+            }
+            return View(account);
+        }
+
+        [Route("CreateOrganizationAccount")]
+        [HttpGet]
+        public IActionResult CreateOrganization()
+        {
+            return View("Create");
+        }
+
+        [Route("CreateOrganizationAccount")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password,email")] Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!UsernameExists(account.username))
+                {
+                    account.Id = Guid.NewGuid();
+                    account.isUser = false;
+                    var sha256 = SHA256.Create();
+                    var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes(account.password));
+                    var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                    account.password = hash1;
+                    _context.Add(account);
+
+                    string organizationId = HttpContext.Session.GetString("registrationId");
+                    string organizationName = HttpContext.Session.GetString("registrationName");
+                    string organizationDateOfFounding = HttpContext.Session.GetString("registrationDateOfFounding");
+                    string organizationDescription = HttpContext.Session.GetString("registrationDascription");
+
+                    Organization organization = new Organization();
+                    organization.Id = Guid.Parse(organizationId);
+                    organization.name = organizationName;
+                    organization.UserAccount = account.Id;
+                    organization.dateOfFounding = DateTime.Parse(organizationDateOfFounding);
+                    organization.description = organizationDescription;
+
+                    _context.Add(organization);
+
+                    HttpContext.Session.Remove("registrationId");
+                    HttpContext.Session.Remove("registrationName");
+                    HttpContext.Session.Remove("registrationDateOfFounding");
+                    HttpContext.Session.Remove("registrationDescription");
+                    await _context.SaveChangesAsync();
+                    // return RedirectToAction(nameof(Index));
+                    return RedirectToAction("", "");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Username already exists, please try again.");
+                    return View("~/Views/Accounts/Create.cshtml");
+
+                }
+            }
+            return View(account);
+        }
+
+        private bool UsernameExists(string username)
+        {
+            return _context.account.Any(e => e.username == username);
+        }
     }
 }

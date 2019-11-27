@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,12 +13,15 @@ namespace CharityData.Models
 
         [Required]
         [StringLength(50, ErrorMessage = "Username cannot be longer than 50 characters.")]
+        [Display(Name = "Username")]
         public string username { get; set; }
 
         [Required, DataType(DataType.Password)]
         [StringLength(80, ErrorMessage = "Password cannot be longer than 80 characters.")]
+        [Display(Name = "Password")]
         public string password { get; set; }
 
+        [Display(Name = "Email Address")]
         public string email { get; set; }
 
         public Guid imageId { get; set; } 
