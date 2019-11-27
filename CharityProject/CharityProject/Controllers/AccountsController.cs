@@ -93,18 +93,22 @@ namespace CharityProject.Controllers
         [HttpGet]
         public IActionResult CreateUser()
         {
-            return View("Create");
+            return View("CreateUser");
         }
 
         [Route("CreateUserAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password")] Account account)
+        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account)
         {
             if (ModelState.IsValid)
             {
                 account.Id = Guid.NewGuid();
                 account.isUser = true;
+                var sha256 = SHA256.Create();
+                var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes(account.password));
+                var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                account.password = hash1;
                 _context.Add(account);
 
                 string userId = HttpContext.Session.GetString("registrationId");
@@ -143,16 +147,20 @@ namespace CharityProject.Controllers
         [Route("CreateOrganizationAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password")] Account account)
+        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password,email")] Account account)
         {
             if (ModelState.IsValid)
             {
                 account.Id = Guid.NewGuid();
                 account.isUser = false;
+                var sha256 = SHA256.Create();
+                var pass1 = sha256.ComputeHash(Encoding.UTF8.GetBytes(account.password));
+                var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
+                account.password = hash1;
                 _context.Add(account);
 
                 string organizationId = HttpContext.Session.GetString("registrationId");
-                string organizationName = HttpContext.Session.GetString("registrationtName");
+                string organizationName = HttpContext.Session.GetString("registrationName");
                 string organizationDateOfFounding = HttpContext.Session.GetString("registrationDateOfFounding");
                 string organizationDescription = HttpContext.Session.GetString("registrationDascription");
 
@@ -171,7 +179,7 @@ namespace CharityProject.Controllers
                 HttpContext.Session.Remove("registrationDescription");
                 await _context.SaveChangesAsync();
                // return RedirectToAction(nameof(Index));
-                return RedirectToAction("", "Account");
+                return RedirectToAction("", "");
             }
             return View(account);
         }

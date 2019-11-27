@@ -55,10 +55,11 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,dateOfFounding,description,creditCardNumber")] Organization organization)
+        public async Task<IActionResult> Create([Bind("Id,name,dateOfFounding,description")] Organization organization)
         {
             if (ModelState.IsValid)
             {
+                organization.Id = Guid.NewGuid();
                 HttpContext.Session.SetString("registrationId", (organization.Id).ToString());
                 HttpContext.Session.SetString("registrationName", organization.name);
                 HttpContext.Session.SetString("registrationDateOfFounding", organization.dateOfFounding.ToString());

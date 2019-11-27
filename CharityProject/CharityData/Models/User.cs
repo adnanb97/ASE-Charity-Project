@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharityData.Models
 {
@@ -20,8 +23,12 @@ namespace CharityData.Models
         [StringLength(50, ErrorMessage = "Last name cannot be longer than 50 characters.")]
         public string lastName { get; set; }
 
+        [NotMapped]
+        public List<SelectListItem> genders { get; set; }
+
         [Required]
         public char gender { get; set; }
+
 
         [Required]
         [DataType(DataType.Date)]

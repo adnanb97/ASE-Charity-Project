@@ -47,7 +47,12 @@ namespace CharityProject.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new User();
+            vm.genders = new List<SelectListItem>{
+                new SelectListItem("F", "F"),
+                new SelectListItem("M", "M")
+            };
+            return View(vm);
         }
 
         // POST: Users/Create
@@ -63,7 +68,7 @@ namespace CharityProject.Controllers
                 HttpContext.Session.SetString("registrationId", (user.Id).ToString());
                 HttpContext.Session.SetString("registrationFirstName", user.firstName);
                 HttpContext.Session.SetString("registrationLastName", user.lastName);
-                HttpContext.Session.SetString("registrationGender", (user.gender).ToString());
+                HttpContext.Session.SetString("registrationGender", user.gender.ToString());
                 HttpContext.Session.SetString("registrationBirthday", (user.dateOfBirth).ToString());
  
                 await _context.SaveChangesAsync();
