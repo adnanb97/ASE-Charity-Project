@@ -81,17 +81,17 @@ namespace CharityProject.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("Create")]
+        [Route("CreateUserAccount")]
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult CreateUser()
         {
-            return View();
+            return View("Create");
         }
 
-        [Route("Create")]
+        [Route("CreateUserAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, username, password, isUser")] Account account)
+        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +121,49 @@ namespace CharityProject.Controllers
                 HttpContext.Session.Remove("registrationBirthday");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(account);
+        }
+
+        [Route("CreateOrganizationAccount")]
+        [HttpGet]
+        public IActionResult CreateOrganization()
+        {
+            return View("Create");
+        }
+
+        [Route("CreateOrganizationAccount")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password")] Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                account.Id = Guid.NewGuid();
+                account.isUser = false;
+                _context.Add(account);
+
+                string organizationId = HttpContext.Session.GetString("registrationId");
+                string organizationName = HttpContext.Session.GetString("registrationtName");
+                string organizationDateOfFounding = HttpContext.Session.GetString("registrationDateOfFounding");
+                string organizationDescription = HttpContext.Session.GetString("registrationDascription");
+
+                Organization organization = new Organization();
+                organization.Id = Guid.Parse(organizationId);
+                organization.name = organizationName;
+                organization.UserAccount = account.Id;
+                organization.dateOfFounding = DateTime.Parse(organizationDateOfFounding);
+                organization.description = organizationDescription;
+                
+                _context.Add(organization);
+
+                HttpContext.Session.Remove("registrationId");
+                HttpContext.Session.Remove("registrationName");
+                HttpContext.Session.Remove("registrationDateOfFounding");
+                HttpContext.Session.Remove("registrationDescription");
+                await _context.SaveChangesAsync();
+               // return RedirectToAction(nameof(Index));
+                return RedirectToAction("", "Account");
             }
             return View(account);
         }

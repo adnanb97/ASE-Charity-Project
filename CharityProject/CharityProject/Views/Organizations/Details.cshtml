@@ -1,0 +1,48 @@
+﻿@model CharityData.Models.Organization
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Organization</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserAccount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserAccount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.dateOfFounding)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dateOfFounding)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.creditCardNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.creditCardNumber)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

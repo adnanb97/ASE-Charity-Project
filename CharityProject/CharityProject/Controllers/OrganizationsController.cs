@@ -11,22 +11,22 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
-    public class UsersController : Controller
+    public class OrganizationsController : Controller
     {
         private readonly CharityContext _context;
 
-        public UsersController(CharityContext context)
+        public OrganizationsController(CharityContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Organizations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.user.ToListAsync());
+            return View(await _context.organization.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Organizations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,51 +34,44 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var user = await _context.user
+            var organization = await _context.organization
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (organization == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(organization);
         }
 
-        // GET: Users/Create
+        // GET: Organizations/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Organizations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,firstName,lastName,gender,dateOfBirth")] User user)
+        public async Task<IActionResult> Create([Bind("Id,name,dateOfFounding,description,creditCardNumber")] Organization organization)
         {
             if (ModelState.IsValid)
             {
-                user.Id = Guid.NewGuid();
-                HttpContext.Session.SetString("registrationId", (user.Id).ToString());
-                HttpContext.Session.SetString("registrationFirstName", user.firstName);
-                HttpContext.Session.SetString("registrationLastName", user.lastName);
-                HttpContext.Session.SetString("registrationGender", (user.gender).ToString());
-                HttpContext.Session.SetString("registrationBirthday", (user.dateOfBirth).ToString());
- 
+                HttpContext.Session.SetString("registrationId", (organization.Id).ToString());
+                HttpContext.Session.SetString("registrationName", organization.name);
+                HttpContext.Session.SetString("registrationDateOfFounding", organization.dateOfFounding.ToString());
+                HttpContext.Session.SetString("registrationDescription", organization.description);
+                organization.Id = Guid.NewGuid();
+                //_context.Add(organization);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("CreateUserAccount", "Account");//   ("Account/Create");
+                return RedirectToAction("CreateOrganizationAccount", "Account");
             }
-            return View(user);
+            return View(organization);
         }
 
-        /*public ActionResult nextStep()
-        {
-            User model = (User)TempData["newUser"];
-            return View(model);
-        }*/
-
-        // GET: Users/Edit/5
+        // GET: Organizations/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -86,22 +79,22 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var user = await _context.user.FindAsync(id);
-            if (user == null)
+            var organization = await _context.organization.FindAsync(id);
+            if (organization == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(organization);
         }
 
-        // POST: Users/Edit/5
+        // POST: Organizations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,UserAccount,firstName,lastName,gender,dateOfBirth,creditCardId")] User user)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,UserAccount,dateOfFounding,description,creditCardNumber")] Organization organization)
         {
-            if (id != user.Id)
+            if (id != organization.Id)
             {
                 return NotFound();
             }
@@ -110,12 +103,12 @@ namespace CharityProject.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(organization);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!OrganizationExists(organization.Id))
                     {
                         return NotFound();
                     }
@@ -126,10 +119,10 @@ namespace CharityProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(organization);
         }
 
-        // GET: Users/Delete/5
+        // GET: Organizations/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -137,30 +130,30 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var user = await _context.user
+            var organization = await _context.organization
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (organization == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(organization);
         }
 
-        // POST: Users/Delete/5
+        // POST: Organizations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var user = await _context.user.FindAsync(id);
-            _context.user.Remove(user);
+            var organization = await _context.organization.FindAsync(id);
+            _context.organization.Remove(organization);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(Guid id)
+        private bool OrganizationExists(Guid id)
         {
-            return _context.user.Any(e => e.Id == id);
+            return _context.organization.Any(e => e.Id == id);
         }
     }
 }
