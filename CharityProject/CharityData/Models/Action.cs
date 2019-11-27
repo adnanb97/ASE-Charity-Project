@@ -18,5 +18,8 @@ namespace CharityData.Models
         public bool actionType { get; set; } // 0 - participation ; 1 - donation
         [Required]
         public Guid organizationId { get; set; }
+        public DateTime creationDateTime { get; set; }
+        public DateTime startDateTime { get; set; }
+        public DateTime endDateTime { get; set; }
     }
 }
