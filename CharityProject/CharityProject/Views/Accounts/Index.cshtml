@@ -17,6 +17,8 @@
         @Html.PasswordFor(model => model.password, new { @class = "form-control", placeholder = "Password" })
         <!--Remember me: <input asp-for="loginData.RememberMe" type="checkbox" /><br />-->
         <input class="btn btn-default" type="submit" value="Login" />
+        <input class="btn btn-default" type="button" value="Register as an User" onclick="@("window.location.href='" + @Url.Action("Create", "Users") + "'");" />
+        <input class="btn btn-default" type="button" value="Register as an Organization" onclick="@("window.location.href='" + @Url.Action("Create", "Organizations") + "'");" />
         @Html.AntiForgeryToken()
     </form>
 </body>

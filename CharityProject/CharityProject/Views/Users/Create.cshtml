@@ -23,6 +23,7 @@
                 <span asp-validation-for="lastName" class="text-danger"></span>
             </div>
             <div class="from-group">
+                <label asp-for="gender" class="control-label"></label>
                 <select asp-for="gender" asp-items="Model.genders"></select>
             </div>
             <div class="form-group">
@@ -37,7 +38,7 @@
         </form>
     </div>
 </div>
-
+<div class="control-label">Step 1 of 2</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
