@@ -1,14 +1,8 @@
 ﻿@model IEnumerable<CharityData.Models.User>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <h2>Users</h2>
+<input asp-action="Create" type="button" class="btn btn-default" value="Create new" />
 <table class="table">
     <thead>
         <tr>
