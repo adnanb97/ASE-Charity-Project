@@ -45,9 +45,8 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var account = await _context.account.FindAsync(organization.UserAccount);
-            var image = await _context.image.FindAsync(account.imageId);
-            ViewData["ImageURL"] = image.Path;
+            await FindImage(organization);
+
             return View(organization);
         }
 
@@ -88,9 +87,8 @@ namespace CharityProject.Controllers
             }
 
             var organization = await _context.organization.FindAsync(id);
-            var account = await _context.account.FindAsync(organization.UserAccount);
-            var image = await _context.image.FindAsync(account.imageId);
-            ViewData["ImageURL"] = image.Path;
+
+            await FindImage(organization);
 
             if (organization == null)
             {
@@ -166,6 +164,21 @@ namespace CharityProject.Controllers
         private bool OrganizationExists(Guid id)
         {
             return _context.organization.Any(e => e.Id == id);
+        }
+
+        private async Task FindImage(Organization organization)
+        {
+            var account = await _context.account.FindAsync(organization.UserAccount);
+            if (account.imageId != null && account.imageId != Guid.Empty)
+            {
+                var image = await _context.image.FindAsync(account.imageId);
+                ViewData["ImageURL"] = image.Path;
+            }
+            else
+            {
+                ViewData["ImageURL"] =
+                    "https://bigriverequipment.com/wp-content/uploads/2017/10/no-photo-available.png";
+            }
         }
     }
 }
