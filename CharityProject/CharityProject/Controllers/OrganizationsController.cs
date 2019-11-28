@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class OrganizationsController : Controller
     {
         private readonly CharityContext _context;
@@ -23,6 +25,8 @@ namespace CharityProject.Controllers
         // GET: Organizations
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View(await _context.organization.ToListAsync());
         }
 

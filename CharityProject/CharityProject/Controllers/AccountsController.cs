@@ -17,6 +17,7 @@ using System.Text;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     [Route("Account")]
     public class AccountsController : Controller
     {
@@ -173,7 +174,7 @@ namespace CharityProject.Controllers
                     string organizationId = HttpContext.Session.GetString("registrationId");
                     string organizationName = HttpContext.Session.GetString("registrationName");
                     string organizationDateOfFounding = HttpContext.Session.GetString("registrationDateOfFounding");
-                    string organizationDescription = HttpContext.Session.GetString("registrationDascription");
+                    string organizationDescription = HttpContext.Session.GetString("registrationDescription");
 
                     Organization organization = new Organization();
                     organization.Id = Guid.Parse(organizationId);
