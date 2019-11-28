@@ -40,6 +40,9 @@ namespace CharityProject.Controllers
             {
                 return NotFound();
             }
+            var account = await _context.account.FindAsync(user.UserAccount);
+            var image = await _context.image.FindAsync(account.imageId);
+            ViewData["ImageURL"] = image.Path;
 
             return View(user);
         }

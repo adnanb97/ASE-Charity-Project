@@ -41,6 +41,9 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
+            var account = await _context.account.FindAsync(organization.UserAccount);
+            var image = await _context.image.FindAsync(account.imageId);
+            ViewData["ImageURL"] = image.Path;
             return View(organization);
         }
 
@@ -81,6 +84,10 @@ namespace CharityProject.Controllers
             }
 
             var organization = await _context.organization.FindAsync(id);
+            var account = await _context.account.FindAsync(organization.UserAccount);
+            var image = await _context.image.FindAsync(account.imageId);
+            ViewData["ImageURL"] = image.Path;
+
             if (organization == null)
             {
                 return NotFound();

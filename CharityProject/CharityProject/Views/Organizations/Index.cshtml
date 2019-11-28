@@ -6,26 +6,22 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<input asp-action="Create" type="button" class="btn btn-default" value="Create new">
+</input>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.name)
+        <tr class="text-center">
+            <th class="text-center">
+               Organization name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserAccount)
+            <th  class="text-center">
+                User Account
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dateOfFounding)
+            <th  class="text-center">
+                Date of Foundation
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.creditCardNumber)
+            <th  class="text-center">
+               Description
             </th>
             <th></th>
         </tr>
@@ -44,9 +40,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.creditCardNumber)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

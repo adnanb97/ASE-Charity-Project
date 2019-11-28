@@ -1,0 +1,27 @@
+﻿@model CharityData.Models.Image
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="form-group">
+    <label class="control-label"> Image URL</label>
+    <input id="newImageURL" value="@ViewData["ImageURL"]" type="url" class="form-control" />
+</div>
+<form asp-action="Edit" asp-controller="Image">
+    <div class="form-group">
+        <label>New Image URL</label>
+        <input asp-for="Path" type="url" class="form-control">
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Update image" class="btn btn-default">
+    </div>
+</form>
+<dt>
+    <p>Image</p>
+</dt>
+<dd>
+    <div class="form-group">
+        <img src="@ViewData["ImageURL"]" height="400">
+    </div>
+</dd>
