@@ -16,6 +16,10 @@ namespace CharityProject.Controllers
         {
             if (HttpContext.Session.GetString("username") == null)
                 return RedirectToAction("", "");
+            if (HttpContext.Session.GetInt32("IsUser") == 0)
+            {
+                return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+            }
             return View();
         }
 
@@ -23,6 +27,10 @@ namespace CharityProject.Controllers
         {
             if (HttpContext.Session.GetString("username") == null)
                 return RedirectToAction("", "");
+            if (HttpContext.Session.GetInt32("IsUser") == 0)
+            {
+                return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+            }
             ViewData["Message"] = "Your application description page.";
 
             return View();
@@ -32,6 +40,10 @@ namespace CharityProject.Controllers
         {
             if (HttpContext.Session.GetString("username") == null)
                 return RedirectToAction("", "");
+            if (HttpContext.Session.GetInt32("IsUser") == 0)
+            {
+                return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+            }
             ViewData["Message"] = "Your contact page.";
 
             return View();
