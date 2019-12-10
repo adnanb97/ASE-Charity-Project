@@ -29,6 +29,13 @@ namespace CharityProject.Controllers
             return View(await _context.user.ToListAsync());
         }
 
+        public IActionResult MyProfile()
+        {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
+            return RedirectToAction("Details", "Users", new { id = HttpContext.Session.GetString("idOfLoggedAccount") }); ;
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -110,8 +117,11 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,UserAccount,firstName,lastName,gender,dateOfBirth,creditCardId")] User user)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,firstName,lastName,gender,dateOfBirth")] User user)
         {
+            Guid idOfLoggedAccount = Guid.Parse(HttpContext.Session.GetString("idOfLoggedUserAccount"));
+               
+            //user.Id = id;
             if (id != user.Id)
             {
                 return NotFound();
@@ -121,6 +131,8 @@ namespace CharityProject.Controllers
             {
                 try
                 {
+                    user.UserAccount = idOfLoggedAccount;
+
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
