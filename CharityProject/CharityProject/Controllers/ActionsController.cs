@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using CharityData.Models;
 using CharityProject;
 using Microsoft.AspNetCore.Http;
-using Action = CharityData.Models.Action;
 
 namespace CharityProject.Controllers
 {
@@ -56,31 +55,33 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,startDateTime,endDateTime")] Action action)
+        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,startDateTime,endDateTime")] CharityData.Models.Action action)
         {
+            string organizationUsername = HttpContext.Session.GetString("username");
+            var account = await _context.account.FirstOrDefaultAsync(m => m.username == organizationUsername);
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            var org = await _context.organization.FirstOrDefaultAsync(m => m.UserAccount == account.Id);
+            if (org == null)
+            {
+                return NotFound();
+            }
+
+            action.organizationId = org.Id;
+            action.creationDateTime = DateTime.Now;
+
             if (ModelState.IsValid)
             {
-                string organizationUsername = HttpContext.Session.GetString("username");
-
-                var account = await _context.account.FirstOrDefaultAsync(m => m.username == organizationUsername);
-                if (account == null)
-                {
-                    return NotFound();
-                }
-
-                var org = await _context.organization.FirstOrDefaultAsync(m => m.UserAccount == account.Id);
-                if (org == null)
-                {
-                    return NotFound();
-                }
-
+               
                 action.Id = Guid.NewGuid();
-                action.organizationId = org.Id;
-                action.creationDateTime = DateTime.Now;
                 _context.Add(action);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             return View(action);
         }
 
@@ -105,7 +106,7 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] Action action)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityData.Models.Action action)
         {
             if (id != action.Id)
             {

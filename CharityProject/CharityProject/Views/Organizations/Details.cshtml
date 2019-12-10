@@ -10,50 +10,51 @@
 <div class="row">
     <div class="col-md-4">
         <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="name" class="control-label">Name</label>
-                    <input asp-for="name" class="form-control" readonly/>
-                    <span asp-validation-for="name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserAccount" class="control-label">User Account</label>
-                    <input asp-for="UserAccount" class="form-control" readonly />
-                    <span asp-validation-for="UserAccount" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="dateOfFounding" class="control-label">Foundation date</label>
-                    <input asp-for="dateOfFounding" class="form-control" readonly/>
-                    <span asp-validation-for="dateOfFounding" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="description" class="control-label">Description</label>
-                    <input asp-for="description" class="form-control" readonly />
-                    <span asp-validation-for="description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="creditCardNumber" class="control-label">Credit card</label>
-                    <input asp-for="creditCardNumber" class="form-control" readonly />
-                    <span asp-validation-for="creditCardNumber" class="text-danger"></span>
-                </div>
+        <div class="form-group">
+            <label asp-for="name" class="control-label">Name</label>
+            <input asp-for="name" class="form-control" readonly />
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserAccount" class="control-label">User Account</label>
+            <input asp-for="UserAccount" class="form-control" readonly />
+            <span asp-validation-for="UserAccount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="dateOfFounding" class="control-label">Foundation date</label>
+            <input asp-for="dateOfFounding" class="form-control" readonly />
+            <span asp-validation-for="dateOfFounding" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="description" class="control-label">Description</label>
+            <input asp-for="description" class="form-control" readonly />
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="creditCardNumber" class="control-label">Credit card</label>
+            <input asp-for="creditCardNumber" class="form-control" readonly />
+            <span asp-validation-for="creditCardNumber" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label">Image</label>
+            <div>
+                <img src="@ViewData["ImageURL"]" height="400">
             </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label  class="control-label">Image</label>
-                    <div>
-                        <img src="@ViewData["ImageURL"]" height="400">
-                    </div>
 
-                </div>
+        </div>
 
-                <div>
-                    <p>
+        <div>
+            <p>
 
-                    </p>
-                </div>
-            </div>
+            </p>
+        </div>
+    </div>
 </div>
 
+<input class="btn btn-default" type="button" value="Add action" onclick="@("window.location.href='" + @Url.Action("Create", "Actions") + "'");" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
