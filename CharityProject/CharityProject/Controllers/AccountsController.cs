@@ -64,14 +64,23 @@ namespace CharityProject.Controllers
                 if (isUser)
                 {
                     HttpContext.Session.SetInt32("IsUser", 1);
+                    var userFind = _context.user.Where(a => a.UserAccount == accountFind.Id).Single();
+                    HttpContext.Session.SetString("idOfLoggedAccount", userFind.Id.ToString());
+                    HttpContext.Session.SetString("idOfLoggedUserAccount", userFind.UserAccount.ToString());
+                    return RedirectToAction("Index", "Home", new { area = "" });
                 }
                 else
                 {
                     HttpContext.Session.SetInt32("IsUser", 0);
+                    var organizationFind = _context.organization.Where(a => a.UserAccount == accountFind.Id).Single();
+                    HttpContext.Session.SetString("idOfLoggedAccount", organizationFind.Id.ToString());
+                    //return View("../Organizations/Details", organizationFind);
+                    return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+                    //return RedirectToAction("Index", "Organizations", new { area = "" });
                 }
                 //HttpContext.Session.SetString("username", account.username);
                 // return View("~/Views/Home/Index.cshtml");
-                return RedirectToAction("Index", "Home", new { area = "" });
+                
             }
             else
             {

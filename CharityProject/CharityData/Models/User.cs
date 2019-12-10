@@ -29,7 +29,7 @@ namespace CharityData.Models
         public List<SelectListItem> genders { get; set; }
 
         [Required]
-        [Display(Name = "Select Gender")]
+        [Display(Name = "Gender")]
         public char gender { get; set; }
 
 
