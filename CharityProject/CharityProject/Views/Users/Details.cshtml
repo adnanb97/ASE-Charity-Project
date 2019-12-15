@@ -59,3 +59,5 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<input class="btn btn-default" type="button" value="Add item" onclick="@("window.location.href='" + @Url.Action("Create", "Items") + "'");" />
