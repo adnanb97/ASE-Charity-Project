@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<input class="btn btn-default" type="button" value="Add action" onclick="@("window.location.href='" + @Url.Action("Create", "Actions") + "'");" />
+<input class="btn btn-default" type="button" value="Add action" onclick="@("window.location.href='" + @Url.Action("Create", "CharityActions") + "'");" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

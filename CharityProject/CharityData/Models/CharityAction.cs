@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CharityData.Models
 {
-    public class Action
+    public class CharityAction
     {
         public Guid Id { get; set; }
         [Required]
