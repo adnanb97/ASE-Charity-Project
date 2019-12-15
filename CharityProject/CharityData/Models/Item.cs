@@ -11,12 +11,15 @@ namespace CharityData.Models
         
         [Required]
         [StringLength(50, ErrorMessage = "Name cannot be longer than 50 characters.")]
+        [Display(Name = "Name of Item")]
         public string name { get; set; }
 
         [StringLength(200, ErrorMessage = "Description cannot be longer than 200 characters.")]
+        [Display(Name = "Item description")]
         public string description { get; set; }
 
         [Required]
+        [Display(Name = "Value of an item")]
         public int value { get; set; }
 
         public Guid userDonatedId { get; set; }
