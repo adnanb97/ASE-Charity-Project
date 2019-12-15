@@ -15,3 +15,4 @@ variables:
 steps:
 - script: dotnet build CharityProject --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+- task: PublishBuildArtifacts@1
