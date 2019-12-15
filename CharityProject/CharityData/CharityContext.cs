@@ -16,7 +16,7 @@ namespace CharityProject
 
         }
 
-        public DbSet<CharityData.Models.Action> action { get; set; }
+        public DbSet<CharityAction> action { get; set; }
         public DbSet<Card> card { get; set; }
         public DbSet<Account> account { get; set; }
         public DbSet<Image> image { get; set; }
@@ -103,10 +103,10 @@ namespace CharityProject
             #endregion
 
             #region ArrayOfActions
-            CharityData.Models.Action[] arrayOfActions = new CharityData.Models.Action[3];
-            arrayOfActions[0] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = false, description = "This is a generic action where you sign up to participate", name = "Race for cure", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)};
-            arrayOfActions[1] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is a generic action where people donate stuff", name = "Fundraising for children without parents", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
-            arrayOfActions[2] = new CharityData.Models.Action { Id = Guid.NewGuid(), actionType = true, description = "This is another action where people donate stuff", name = "Another fundraising", organizationId = arrayOfOrganizations[1].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
+            CharityAction[] arrayOfActions = new CharityAction[3];
+            arrayOfActions[0] = new CharityAction { Id = Guid.NewGuid(), actionType = false, description = "This is a generic action where you sign up to participate", name = "Race for cure", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)};
+            arrayOfActions[1] = new CharityAction { Id = Guid.NewGuid(), actionType = true, description = "This is a generic action where people donate stuff", name = "Fundraising for children without parents", organizationId = arrayOfOrganizations[0].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
+            arrayOfActions[2] = new CharityAction { Id = Guid.NewGuid(), actionType = true, description = "This is another action where people donate stuff", name = "Another fundraising", organizationId = arrayOfOrganizations[1].Id, creationDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), startDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second), endDateTime = new DateTime(2020, 2, 5, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second) };
             #endregion
 
             #region ArrayOfItems
@@ -195,9 +195,9 @@ namespace CharityProject
             #endregion
 
             #region ActionSeed
-            modelBuilder.Entity<CharityData.Models.Action>().HasData(arrayOfActions[0]);
-            modelBuilder.Entity<CharityData.Models.Action>().HasData(arrayOfActions[1]);
-            modelBuilder.Entity<CharityData.Models.Action>().HasData(arrayOfActions[2]);
+            modelBuilder.Entity<CharityAction>().HasData(arrayOfActions[0]);
+            modelBuilder.Entity<CharityAction>().HasData(arrayOfActions[1]);
+            modelBuilder.Entity<CharityAction>().HasData(arrayOfActions[2]);
             #endregion
 
             #region ItemSeed
