@@ -30,17 +30,29 @@ namespace CharityProject.Controllers
             {
                 return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
             }
-            var activeActions = await _context.action.Where(a => a.endDateTime >= DateTime.Now).ToListAsync();
-        
+            var activeActions = await _context.action.Where(a => a.endDateTime >= DateTime.Now && a.startDateTime <= DateTime.Now).ToListAsync();
+            var pastActions = await _context.action.Where(a => a.endDateTime < DateTime.Now).ToListAsync();
+            
             List<String> namesOfOrg = new List<String>();
+            List<String> namesOfOrg2 = new List<String>();
+            //List<String> namesOfOrg3 = new List<String>();
             foreach (var oneAction in activeActions)
             {
                 Guid idActionOrg = oneAction.organizationId;
                 CharityData.Models.Organization foundOrg = _context.organization.Where(a => a.Id == idActionOrg).First();
                 namesOfOrg.Add(foundOrg.name);
             }
+            foreach (var oneAction in pastActions)
+            {
+                Guid idActionOrg = oneAction.organizationId;
+                CharityData.Models.Organization foundOrg = _context.organization.Where(a => a.Id == idActionOrg).First();
+                namesOfOrg2.Add(foundOrg.name);
+            }
             ViewBag.namesOfOrg = namesOfOrg;
             ViewBag.activeActions = activeActions;
+
+            ViewBag.namesOfOrg2 = namesOfOrg2;
+            ViewBag.pastActions = pastActions;
             return View();
         }
 
