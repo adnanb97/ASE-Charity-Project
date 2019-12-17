@@ -59,19 +59,8 @@ namespace CharityProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                string organizationUsername = HttpContext.Session.GetString("username");
-                var account = await _context.account.FirstOrDefaultAsync(m => m.username == organizationUsername);
-                if (account == null)
-                {
-                    return NotFound();
-                }
-
-                var org = await _context.organization.FirstOrDefaultAsync(m => m.UserAccount == account.Id);
-                if (org == null)
-                {
-                    return NotFound();
-                }
-                charityAction.organizationId = org.Id;
+                string orgId = HttpContext.Session.GetString("idOfLoggedAccount");
+                charityAction.organizationId = Guid.Parse(orgId);
                 charityAction.creationDateTime = DateTime.Now;
 
                 charityAction.Id = Guid.NewGuid();
