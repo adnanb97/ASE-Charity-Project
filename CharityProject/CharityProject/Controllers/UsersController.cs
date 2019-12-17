@@ -72,6 +72,19 @@ namespace CharityProject.Controllers
             }
             ViewBag.items = donatedItems;
             ViewBag.actDoneted = actDoneted;
+
+            var payments = await _context.payment.Where(p => p.userSenderId == Guid.Parse(userId)).ToListAsync();
+            List<Organization> organizations = new List<Organization>();
+            foreach (var payment in payments)
+            {
+                var org = await _context.organization.Where(o => o.Id == payment.organizationReceiverId).FirstOrDefaultAsync();
+                if (org != null)
+                    organizations.Add(org);
+            }
+
+            ViewBag.payments = payments;
+            ViewBag.organizations = organizations;
+
             return View(user);
         }
 
