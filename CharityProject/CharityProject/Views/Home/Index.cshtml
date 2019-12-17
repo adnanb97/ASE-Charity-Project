@@ -97,7 +97,7 @@
     -->
 
 <div>
-
+    <p>Active Actions</p>
     <table class="table">
         <thead>
             <tr>
@@ -147,5 +147,57 @@
 
         </tbody>
     </table>
+</div>
 
+<div>
+    <p>Past Actions</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Action name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Organization Name
+                </th>
+                <th>
+                    Start date
+                </th>
+                <th>
+                    End date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var orgNames2 = ViewBag.namesOfOrg2;
+                var actions2 = ViewBag.pastActions;
+                for (int i = 0; i < actions2.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @actions2[i].name
+                        </td>
+                        <td>
+                            @actions2[i].description
+                        </td>
+                        <td>
+                            @orgNames2[i]
+
+                        </td>
+                        <td>
+                            @actions2[i].startDateTime
+                        </td>
+                        <td>
+                            @actions2[i].endDateTime
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
 </div>
