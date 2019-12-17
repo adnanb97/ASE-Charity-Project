@@ -93,4 +93,59 @@
     </div>
 </div>
  -->
-<input class="btn btn-default" type="button" value="Show active actions" onclick="@("window.location.href='" + @Url.Action("Index", "Actions") + "'");" />
+<!--<input class="btn btn-default" type="button" value="Show active actions" onclick="@("window.location.href='" + @Url.Action("Index", "Actions") + "'");" />
+    -->
+
+<div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Action name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Organization Name
+                </th>
+                <th>
+                   Start date
+                </th>
+                <th>
+                   End date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var orgNames = ViewBag.namesOfOrg;
+                var actions = ViewBag.activeActions;
+                for (int i = 0; i < actions.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @actions[i].name
+                        </td>
+                        <td>
+                            @actions[i].description
+                        </td>
+                        <td>
+                            @orgNames[i]
+                            
+                        </td>
+                        <td>
+                            @actions[i].startDateTime
+                        </td>
+                        <td>
+                            @actions[i].endDateTime
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+</div>
