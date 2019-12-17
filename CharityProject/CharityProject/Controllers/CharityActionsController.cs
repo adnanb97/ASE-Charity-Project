@@ -11,22 +11,22 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
-    public class ActionsController : Controller
+    public class CharityActionsController : Controller
     {
         private readonly CharityContext _context;
 
-        public ActionsController(CharityContext context)
+        public CharityActionsController(CharityContext context)
         {
             _context = context;
         }
 
-        // GET: Actions
+        // GET: CharityActions
         public async Task<IActionResult> Index()
         {
             return View(await _context.action.Where(a => a.endDateTime >= DateTime.Now).ToListAsync());
         }
 
-        // GET: Actions/Details/5
+        // GET: CharityActions/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,58 +34,55 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var action = await _context.action
+            var charityAction = await _context.action
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (action == null)
+            if (charityAction == null)
             {
                 return NotFound();
             }
 
-            return View(action);
+            return View(charityAction);
         }
 
-        // GET: Actions/Create
+        // GET: CharityActions/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Actions/Create
+        // POST: CharityActions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,startDateTime,endDateTime")] CharityData.Models.Action action)
+        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityAction charityAction)
         {
-            string organizationUsername = HttpContext.Session.GetString("username");
-            var account = await _context.account.FirstOrDefaultAsync(m => m.username == organizationUsername);
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            var org = await _context.organization.FirstOrDefaultAsync(m => m.UserAccount == account.Id);
-            if (org == null)
-            {
-                return NotFound();
-            }
-
-            action.organizationId = org.Id;
-            action.creationDateTime = DateTime.Now;
-
             if (ModelState.IsValid)
             {
-               
-                action.Id = Guid.NewGuid();
-                _context.Add(action);
+                string organizationUsername = HttpContext.Session.GetString("username");
+                var account = await _context.account.FirstOrDefaultAsync(m => m.username == organizationUsername);
+                if (account == null)
+                {
+                    return NotFound();
+                }
+
+                var org = await _context.organization.FirstOrDefaultAsync(m => m.UserAccount == account.Id);
+                if (org == null)
+                {
+                    return NotFound();
+                }
+                charityAction.organizationId = org.Id;
+                charityAction.creationDateTime = DateTime.Now;
+
+                charityAction.Id = Guid.NewGuid();
+                _context.Add(charityAction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //var errors = ModelState.Values.SelectMany(v => v.Errors);
-            return View(action);
+            return View(charityAction);
         }
 
-        // GET: Actions/Edit/5
+        // GET: CharityActions/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -93,22 +90,22 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var action = await _context.action.FindAsync(id);
-            if (action == null)
+            var charityAction = await _context.action.FindAsync(id);
+            if (charityAction == null)
             {
                 return NotFound();
             }
-            return View(action);
+            return View(charityAction);
         }
 
-        // POST: Actions/Edit/5
+        // POST: CharityActions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityData.Models.Action action)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityAction charityAction)
         {
-            if (id != action.Id)
+            if (id != charityAction.Id)
             {
                 return NotFound();
             }
@@ -117,12 +114,12 @@ namespace CharityProject.Controllers
             {
                 try
                 {
-                    _context.Update(action);
+                    _context.Update(charityAction);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ActionExists(action.Id))
+                    if (!CharityActionExists(charityAction.Id))
                     {
                         return NotFound();
                     }
@@ -133,10 +130,10 @@ namespace CharityProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(action);
+            return View(charityAction);
         }
 
-        // GET: Actions/Delete/5
+        // GET: CharityActions/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -144,28 +141,28 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
 
-            var action = await _context.action
+            var charityAction = await _context.action
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (action == null)
+            if (charityAction == null)
             {
                 return NotFound();
             }
 
-            return View(action);
+            return View(charityAction);
         }
 
-        // POST: Actions/Delete/5
+        // POST: CharityActions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var action = await _context.action.FindAsync(id);
-            _context.action.Remove(action);
+            var charityAction = await _context.action.FindAsync(id);
+            _context.action.Remove(charityAction);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ActionExists(Guid id)
+        private bool CharityActionExists(Guid id)
         {
             return _context.action.Any(e => e.Id == id);
         }
