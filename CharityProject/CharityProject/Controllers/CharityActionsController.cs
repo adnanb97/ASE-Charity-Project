@@ -23,7 +23,7 @@ namespace CharityProject.Controllers
         // GET: CharityActions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.action.ToListAsync());
+            return View(await _context.action.Where(a => a.endDateTime >= DateTime.Now).ToListAsync());
         }
 
         // GET: CharityActions/Details/5
