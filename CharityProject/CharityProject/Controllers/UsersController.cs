@@ -54,6 +54,24 @@ namespace CharityProject.Controllers
             var image = await _context.image.FindAsync(account.imageId);
             ViewData["ImageURL"] = image.Path;
 
+            string userId = HttpContext.Session.GetString("idOfLoggedAccount");
+            var donated = await _context.itemInAction.ToListAsync();
+           
+            List<Item> donatedItems = new List<Item>();
+            List<CharityAction> actDoneted = new List<CharityAction>();
+            foreach(var item in donated)
+            {
+                var it = await _context.item.Where(i => i.userDonatedId == Guid.Parse(userId) && i.Id == item.itemId).FirstOrDefaultAsync();
+                var actionDonetedTo = await _context.action.Where(a => a.Id == item.actionId).FirstOrDefaultAsync();
+                if (it != null)
+                {
+                    donatedItems.Add(it);
+                    if (actionDonetedTo != null)
+                        actDoneted.Add(actionDonetedTo);
+                }       
+            }
+            ViewBag.items = donatedItems;
+            ViewBag.actDoneted = actDoneted;
             return View(user);
         }
 
