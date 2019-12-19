@@ -60,6 +60,7 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <div>
+    <h2>History of donated items</h2>
     <table class="table">
         <thead>
             <tr>
@@ -83,23 +84,56 @@
                 var actDoneted = ViewBag.actDoneted;
                 for (int i = 0; i < donatedItems.Count; i++)
                 {
-            <tr>
-                <td>
-                    @donatedItems[i].name
-                </td>
-                <td>
-                    @donatedItems[i].description
-                </td>
-                <td>
-                    @donatedItems[i].value
-                </td>
-                <td>
-                    @actDoneted[i].name
-                </td>
-            </tr>
+                    <tr>
+                        <td>
+                            @donatedItems[i].name
+                        </td>
+                        <td>
+                            @donatedItems[i].description
+                        </td>
+                        <td>
+                            @donatedItems[i].value
+                        </td>
+                        <td>
+                            @actDoneted[i].name
+                        </td>
+                    </tr>
                 }
-              }
+            }
         </tbody>
     </table>
+</div>
+<h2>History of payments</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name of organization
+            </th>
+            <th>
+                Donated amout
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var payments = ViewBag.payments;
+            var organizations = ViewBag.organizations;
+            for (int i = 0; i < payments.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @organizations[i].name
+                    </td>
+                    <td>
+                        @payments[i].amount
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div>
+
 </div>
 <input class="btn btn-default" type="button" value="Add item" onclick="@("window.location.href='" + @Url.Action("Create", "Items") + "'");" />
