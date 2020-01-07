@@ -60,6 +60,13 @@
         </div>
     </form>
 </div>
+<div>
+    @{ViewDataDictionary dictionary = new ViewDataDictionary(ViewData);
+        dictionary.Add("id", Model.Id);
+        dictionary.Add("UserAccount", Model.UserAccount);
+    }
+    @{await Html.RenderPartialAsync("_ImageForm", dictionary);}
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>

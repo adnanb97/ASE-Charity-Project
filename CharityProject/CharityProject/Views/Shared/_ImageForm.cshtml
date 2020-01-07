@@ -1,0 +1,20 @@
+﻿<input type="button" value="Edit photo" class="btn btn-default" id="editImage" />
+@{
+    var id = (Guid)ViewData["id"];
+    var UserAccount = (Guid)ViewData["UserAccount"];
+
+ }
+
+
+@using (Html.BeginForm("Edit", "Images", FormMethod.Post))
+{
+    <text>
+        <div id="editImageForm" class="form-group">
+            <label for="imgUrl">New Url</label>
+            <input value="@UserAccount" name="UserAccount" class="form-control hidden" />
+            <input value="@id" name="id" class="form-control hidden" />
+            <input id="imgUrl" name="imgUrl" type="url" />
+            <input type="submit" value="Save photo" class="btn btn-default" id="saveImage" />
+        </div>
+    </text>
+}

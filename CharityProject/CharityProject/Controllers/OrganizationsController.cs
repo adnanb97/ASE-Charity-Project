@@ -172,7 +172,7 @@ namespace CharityProject.Controllers
             if (account.imageId != null && account.imageId != Guid.Empty)
             {
                 var image = await _context.image.FindAsync(account.imageId);
-                ViewData["ImageURL"] = image.Path;
+                ViewData["ImageURL"] = image?.Path;
             }
             else
             {

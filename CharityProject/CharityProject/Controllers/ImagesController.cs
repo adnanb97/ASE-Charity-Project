@@ -18,21 +18,36 @@ namespace CharityProject.Controllers
         }
         // GET: /<controller>/
         [HttpPost]
-        public async Task <IActionResult> Edit(Image image)
+        public async Task<IActionResult> Edit(Guid UserAccount, Guid id, string imgUrl)
         {
-            var ourImage = await  _context.image.FindAsync(image.Id);
-            if (ourImage != null)
+            var image = new Image()
             {
-                ourImage.Path = image.Path;
-            }
-            else
+                Id = Guid.NewGuid(),
+                Path = imgUrl
+            };
+            _context.image.Add(image);
+            _context.SaveChanges();
+            var account = _context.account.Find(UserAccount);
+            if (account != null)
             {
-                _context.image.Add(image);
+                account.imageId = image.Id;
             }
+            await _context.SaveChangesAsync();
 
-            _context.SaveChangesAsync();
+            //var ourImage = await  _context.image.FindAsync(image.Id);
+            //if (ourImage != null)
+            //{
+            //    ourImage.Path = image.Path;
+            //}
+            //else
+            //{
+            //    _context.image.Add(image);
+            //}
 
-            return View();
+            //_context.SaveChangesAsync();
+
+            var controllerName = account.isUser ? "Users" : "Organizations";
+            return RedirectToAction("Edit", controllerName, new {id = id});
         }
     }
 }

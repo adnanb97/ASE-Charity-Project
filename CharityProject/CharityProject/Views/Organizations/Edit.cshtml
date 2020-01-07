@@ -41,25 +41,26 @@
                 </div>
             </div>
             <div class="col-md-2"></div>
-                <div class="col-md-4">
-                    <div class="form-group left">
-                        <label asp-for="description" class="control-label">Image</label>
-                        <div>
-                            <img src="@ViewData["ImageURL"]" height="400">
-                        </div>
-
-                    </div>
-
+            <div class="col-md-4">
+                <div class="form-group left">
+                    <label asp-for="description" class="control-label">Image</label>
                     <div>
-                        <p>
+                        <img src="@ViewData["ImageURL"]" height="400">
+                    </div>
 
-                        </p>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-default" />
-                    </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </form>
+    </div>
+    <div>
+        @{ViewDataDictionary dictionary = new ViewDataDictionary(ViewData);
+            dictionary.Add("id", Model.Id);
+            dictionary.Add("UserAccount", Model.UserAccount);
+        }
+        @{await Html.RenderPartialAsync("_ImageForm", dictionary);}
     </div>
 </div>
 
@@ -69,4 +70,9 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @*function editImage() {
+            document.getElementById("editImageForm").hidden = false;
+            //document.getElementById("form").submit();
+        }*@
 }
+
