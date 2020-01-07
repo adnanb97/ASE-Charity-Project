@@ -29,6 +29,13 @@ namespace CharityProject.Controllers
             return View(await _context.user.ToListAsync());
         }
 
+        public IActionResult MyProfile()
+        {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
+            return RedirectToAction("Details", "Users", new { id = HttpContext.Session.GetString("idOfLoggedAccount") }); ;
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -46,6 +53,54 @@ namespace CharityProject.Controllers
 
             await FindImage(user);
 
+            string userId = HttpContext.Session.GetString("idOfLoggedAccount");
+            var donated = await _context.itemInAction.ToListAsync();
+           
+            List<Item> donatedItems = new List<Item>();
+            List<CharityAction> actDoneted = new List<CharityAction>();
+            foreach(var item in donated)
+            {
+                var it = await _context.item.Where(i => i.userDonatedId == Guid.Parse(userId) && i.Id == item.itemId).FirstOrDefaultAsync();
+                var actionDonetedTo = await _context.action.Where(a => a.Id == item.actionId).FirstOrDefaultAsync();
+                if (it != null)
+                {
+                    donatedItems.Add(it);
+                    if (actionDonetedTo != null)
+                        actDoneted.Add(actionDonetedTo);
+                }       
+            }
+            ViewBag.items = donatedItems;
+            ViewBag.actDoneted = actDoneted;
+
+            var payments = await _context.payment.Where(p => p.userSenderId == Guid.Parse(userId)).ToListAsync();
+            List<Organization> organizations = new List<Organization>();
+            foreach (var payment in payments)
+            {
+                var org = await _context.organization.Where(o => o.Id == payment.organizationReceiverId).FirstOrDefaultAsync();
+                if (org != null)
+                    organizations.Add(org);
+            }
+
+            ViewBag.payments = payments;
+            ViewBag.organizations = organizations;
+
+            var participatedActions = await _context.userParticipatingInAction.Where(p => p.userId == Guid.Parse(userId)).ToListAsync();
+            List<CharityAction> myActions = new List<CharityAction>();
+            List<Organization> organizedBy = new List<Organization>();
+            foreach (var part in participatedActions)
+            {
+                var action = await _context.action.Where(a => a.Id == part.actionId).FirstOrDefaultAsync();
+                if (action != null)
+                {
+                    var org = await _context.organization.Where(o => o.Id == action.organizationId).FirstOrDefaultAsync();
+                    myActions.Add(action);
+                    if (org != null)
+                        organizedBy.Add(org);
+                }
+            }
+
+            ViewBag.organizedBy = organizedBy;
+            ViewBag.myActions = myActions;
             return View(user);
         }
 
@@ -112,8 +167,11 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,UserAccount,firstName,lastName,gender,dateOfBirth,creditCardId")] User user)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,firstName,lastName,gender,dateOfBirth")] User user)
         {
+            Guid idOfLoggedAccount = Guid.Parse(HttpContext.Session.GetString("idOfLoggedUserAccount"));
+               
+            //user.Id = id;
             if (id != user.Id)
             {
                 return NotFound();
@@ -123,6 +181,8 @@ namespace CharityProject.Controllers
             {
                 try
                 {
+                    user.UserAccount = idOfLoggedAccount;
+
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
