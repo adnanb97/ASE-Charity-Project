@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharityProject", "CharityProject\CharityProject.csproj", "{1BB55F32-F30E-4197-AA5C-0C00592C455E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharityData", "CharityData\CharityData.csproj", "{575C5325-9F43-496F-ADEF-4E303272A10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharityData", "CharityData\CharityData.csproj", "{575C5325-9F43-496F-ADEF-4E303272A10E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestCharityProject", "XUnitTestCharityProject\XUnitTestCharityProject.csproj", "{FB672EC7-3491-494F-9F8E-8E7A9A93C82B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{575C5325-9F43-496F-ADEF-4E303272A10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{575C5325-9F43-496F-ADEF-4E303272A10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{575C5325-9F43-496F-ADEF-4E303272A10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB672EC7-3491-494F-9F8E-8E7A9A93C82B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB672EC7-3491-494F-9F8E-8E7A9A93C82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB672EC7-3491-494F-9F8E-8E7A9A93C82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB672EC7-3491-494F-9F8E-8E7A9A93C82B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
