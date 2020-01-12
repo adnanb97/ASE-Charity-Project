@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CharityData\CharityData.csproj" />
+    <ProjectReference Include="..\CharityPayment\CharityPayment.csproj" />
   </ItemGroup>
 
 </Project>

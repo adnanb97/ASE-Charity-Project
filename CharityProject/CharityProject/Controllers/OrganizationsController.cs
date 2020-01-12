@@ -27,6 +27,10 @@ namespace CharityProject.Controllers
         {
             if (HttpContext.Session.GetString("username") == null)
                 return RedirectToAction("", "");
+            var currentLoggedUser = HttpContext.Session.GetString("idOfLoggedUserAccount");
+            var currentLoggedUserObject = _context.user.Where(u => u.UserAccount.ToString() == currentLoggedUser).Single();
+            var creditCard = currentLoggedUserObject.creditCardId;
+            ViewBag.creditCardId = creditCard.ToString();
             return View(await _context.organization.ToListAsync());
         }
 
@@ -166,6 +170,31 @@ namespace CharityProject.Controllers
         private bool OrganizationExists(Guid id)
         {
             return _context.organization.Any(e => e.Id == id);
+        }
+
+        // GET: Users/Donate/5
+        public async Task<IActionResult> Donate(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.organization.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var currentLoggedUser = HttpContext.Session.GetString("idOfLoggedUserAccount");
+            var currentLoggedUserObject = _context.user.Where(u => u.UserAccount.ToString() == currentLoggedUser).Single();
+            var creditCard = currentLoggedUserObject.creditCardId;
+            var creditCardObject = _context.card.Where(c => c.Id == creditCard).Single();
+            HttpContext.Session.SetString("donatingTo", user.name);
+            HttpContext.Session.SetString("AccountFunds", creditCardObject.amount.ToString());
+            HttpContext.Session.SetString("TransferringFrom", currentLoggedUserObject.Id.ToString());
+            HttpContext.Session.SetString("TransferringTo", id.ToString());
+
+            return RedirectToAction("Create", "Payments");
         }
     }
 }
