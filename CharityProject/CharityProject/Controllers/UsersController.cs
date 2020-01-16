@@ -54,6 +54,11 @@ namespace CharityProject.Controllers
             var image = await _context.image.FindAsync(account.imageId);
             ViewData["ImageURL"] = image.Path;
 
+            if (user.creditCardId.ToString() == "00000000-0000-0000-0000-000000000000")
+                ViewBag.showButton = 1;
+            else
+                ViewBag.showButton = 0;
+
             string userId = HttpContext.Session.GetString("idOfLoggedAccount");
             var donated = await _context.itemInAction.ToListAsync();
            
