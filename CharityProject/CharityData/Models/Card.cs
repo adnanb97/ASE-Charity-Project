@@ -22,6 +22,7 @@ namespace CharityData.Models
         public double amount { get; set; }
 
         [Required]
+        [StringLength(16, MinimumLength = 16, ErrorMessage = "Account number must have 16 digits.")]
         public string creditCardNumber { get; set; }
     }
 }
