@@ -497,12 +497,44 @@ namespace XUnitTestCharityProject
 
             Assert.Equal(amountBeforeOrga, theirCard.amount);
         }
-        /*[Fact]
-        public void UnitTest_AddingCardToUser()
+        [Fact]
+        public void UnitTest_AddingCardToUser_CheckCardCreation()
         {
             mockDB();
+            int countCards = _dbContext.card.Count();
+            CardsController c = new CardsController(_dbContext);
+            var userCreatingCard = _dbContext.user.FirstOrDefault();
+            Card newCard = new Card()
+            {
+                Id = Guid.NewGuid(),
+                dateOfExpiry = new DateTime(2020, 10, 10),
+                bankName = "Some test bank",
+                amount = 100,
+                creditCardNumber = "1111222233334444"
+            };
+            var result = c.Create(newCard, userCreatingCard.Id.ToString());
 
-        }*/
+            Assert.Equal(countCards + 1, _dbContext.card.Count());
+        }
+        [Fact]
+        public void UnitTest_AddingCardToUser_CheckCardAssignment()
+        {
+            mockDB();
+            int countCards = _dbContext.card.Count();
+            CardsController c = new CardsController(_dbContext);
+            var userCreatingCard = _dbContext.user.FirstOrDefault();
+            Card newCard = new Card()
+            {
+                Id = Guid.NewGuid(),
+                dateOfExpiry = new DateTime(2020, 10, 10),
+                bankName = "Some test bank",
+                amount = 100,
+                creditCardNumber = "1111222233334444"
+            };
+            var result = c.Create(newCard, userCreatingCard.Id.ToString());
+
+            Assert.Equal(newCard.Id.ToString(), userCreatingCard.creditCardId.ToString());
+        }
     }
     
 }
