@@ -40,7 +40,7 @@ namespace CharityProject.Controllers
 
         [Route("Login")]
         [HttpPost]
-        public IActionResult Login(Account account)
+        public IActionResult Login(Account account, bool usesSession = true)
         {
             
             if (ModelState.IsValid)
@@ -58,24 +58,34 @@ namespace CharityProject.Controllers
                     return View("~/Views/Accounts/Index.cshtml");
                     //return RedirectToAction("", "");//, new { area = "Admin" });
                 }
-                HttpContext.Session.SetString("username", account.username);
-                var accountFind = _context.account.Where(a => a.username == account.username).Single();
+                if (usesSession) // for testing purposes - we don't use sessions but mock the account logged in
+                {
+                    HttpContext.Session.SetString("username", account.username);
+                }
+                var accountFind = _context.account.Where(a => a.username == account.username).First();
                 var isUser = _context.user.Any(u => u.UserAccount == accountFind.Id);
                 if (isUser)
                 {
-                    HttpContext.Session.SetInt32("IsUser", 1);
                     var userFind = _context.user.Where(a => a.UserAccount == accountFind.Id).Single();
-                    HttpContext.Session.SetString("idOfLoggedAccount", userFind.Id.ToString());
-                    HttpContext.Session.SetString("idOfLoggedUserAccount", userFind.UserAccount.ToString());
+                    if (usesSession)
+                    {
+                        HttpContext.Session.SetInt32("IsUser", 1);
+                        HttpContext.Session.SetString("idOfLoggedAccount", userFind.Id.ToString());
+                        HttpContext.Session.SetString("idOfLoggedUserAccount", userFind.UserAccount.ToString());
+                    }
+                    
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
                 else
                 {
-                    HttpContext.Session.SetInt32("IsUser", 0);
                     var organizationFind = _context.organization.Where(a => a.UserAccount == accountFind.Id).Single();
-                    HttpContext.Session.SetString("idOfLoggedAccount", organizationFind.Id.ToString());
+                    if (usesSession)
+                    {
+                        HttpContext.Session.SetInt32("IsUser", 0);
+                        HttpContext.Session.SetString("idOfLoggedAccount", organizationFind.Id.ToString());
+                    }
                     //return View("../Organizations/Details", organizationFind);
-                    return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+                    return RedirectToAction("Details", "Organizations", new { id = organizationFind.Id.ToString() });
                     //return RedirectToAction("Index", "Organizations", new { area = "" });
                 }
                 //HttpContext.Session.SetString("username", account.username);

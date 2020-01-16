@@ -20,7 +20,7 @@ namespace XUnitTestCharityProject
     {
         public DbContextOptionsBuilder<CharityContext> optionsBuilder = new DbContextOptionsBuilder<CharityContext>();
         public CharityContext _dbContext;
-        
+        public Account[] savedAccounts; 
         public void mockDB()
         {
             optionsBuilder.UseInMemoryDatabase();
@@ -67,7 +67,7 @@ namespace XUnitTestCharityProject
                 arrayOfAccounts[3] = new Account { Id = Guid.NewGuid(), username = "sampleUser4", password = hash4, email = "sampleUser4@mail.com", isUser = false, imageId = arrayOfImages[3].Id };
                 arrayOfAccounts[4] = new Account { Id = Guid.NewGuid(), username = "sampleUser5", password = hash5, email = "sampleUser5@mail.com", isUser = false, imageId = arrayOfImages[4].Id };
             }
-
+            savedAccounts = arrayOfAccounts;
             _dbContext.account.Add(arrayOfAccounts[0]);
             _dbContext.account.Add(arrayOfAccounts[1]);
             _dbContext.account.Add(arrayOfAccounts[2]);
@@ -99,8 +99,7 @@ namespace XUnitTestCharityProject
 
             _dbContext.user.Add(arrayOfUsers[0]);
             _dbContext.user.Add(arrayOfUsers[1]);
-            _dbContext.user.Add(arrayOfUsers[2
-]);
+            _dbContext.user.Add(arrayOfUsers[2]);
             #endregion
 
             #region addingOrganizations
@@ -307,5 +306,65 @@ namespace XUnitTestCharityProject
             Assert.Equal(actions.Count, controller.ViewBag.myActions.Count);
         }
 
+        [Fact]
+        public void unitTest_differentViewsForDifferentRoles_User()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            var user = savedAccounts[0];
+            user.password = "samplepass1";
+
+            IActionResult res = controller.Login(user, false);
+            var redirectToActionResult =
+            Assert.IsType<RedirectToActionResult>(res);
+            Assert.Equal("Home", redirectToActionResult.ControllerName);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+        }
+        [Fact]
+        public void unitTest_differentViewsForDifferentRoles_Organization()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            var user = savedAccounts[3];
+            user.password = "samplepass4";
+
+            IActionResult res = controller.Login(user, false);
+            var redirectToActionResult =
+            Assert.IsType<RedirectToActionResult>(res);
+            Assert.Equal("Organizations", redirectToActionResult.ControllerName);
+            Assert.Equal("Details", redirectToActionResult.ActionName);
+        }
+        [Fact]
+        public async void unitTest_PastActions()
+        {
+            mockDB();
+            var controller = new HomeController(_dbContext);
+            var user = _dbContext.user.FirstOrDefault();
+            var account = _dbContext.account.Where(a => a.Id.ToString().Equals(user.UserAccount.ToString())).First();
+            var result = await controller.Index(account.username);
+            
+            Assert.Equal(_dbContext.action.Where(a => a.endDateTime < DateTime.Now).Count(), controller.ViewBag.pastActions.Count);
+        }
+        [Fact]
+        public async void unitTest_FutureActions()
+        {
+            mockDB();
+            var controller = new HomeController(_dbContext);
+            var user = _dbContext.user.FirstOrDefault();
+            var account = _dbContext.account.Where(a => a.Id.ToString().Equals(user.UserAccount.ToString())).First();
+            var result = await controller.Index(account.username);
+
+            Assert.Equal(_dbContext.action.Where(a => a.startDateTime > DateTime.Now).Count(), controller.ViewBag.futureActions.Count);
+        }
+        [Fact]
+        public async void unitTest_MoneyTransferringNormal()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString()));
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString()));
+
+        }
     }
 }
