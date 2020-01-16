@@ -1,4 +1,5 @@
 using CharityData.Models;
+using CharityPayment;
 using CharityProject;
 using CharityProject.Controllers;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,9 @@ namespace XUnitTestCharityProject
         public Account[] savedAccounts; 
         public void mockDB()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             optionsBuilder.UseInMemoryDatabase();
+#pragma warning restore CS0618 // Type or member is obsolete
             _dbContext = new CharityContext(optionsBuilder.Options);
 
             #region addingImages
@@ -208,7 +211,7 @@ namespace XUnitTestCharityProject
         //TESTS
 
         [Fact]
-        public async void unitTest_addAction()
+        public async void UnitTest_addAction()
         {
             mockDB();
             var controller = new CharityActionsController(_dbContext);
@@ -222,7 +225,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public async void unitTest_addItem()
+        public async void UnitTest_addItem()
         {
             mockDB();
             var controller = new ItemsController(_dbContext);
@@ -235,7 +238,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public async void unitTest_CurrentlyActiveActions()
+        public async void UnitTest_CurrentlyActiveActions()
         {
             mockDB();
             var controller = new CharityActionsController(_dbContext);
@@ -249,7 +252,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public async void unitTest_HistoryOfDonatedItems()
+        public async void UnitTest_HistoryOfDonatedItems()
         {
             mockDB();
             var controller = new UsersController(_dbContext);
@@ -272,7 +275,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public async void unitTest_HistoryOfPayments()
+        public async void UnitTest_HistoryOfPayments()
         {
             mockDB();
             var controller = new UsersController(_dbContext);
@@ -285,7 +288,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public async void unitTest_HistoryOfParticipatedActions()
+        public async void UnitTest_HistoryOfParticipatedActions()
         {
             mockDB();
             var controller = new UsersController(_dbContext);
@@ -307,7 +310,7 @@ namespace XUnitTestCharityProject
         }
 
         [Fact]
-        public void unitTest_differentViewsForDifferentRoles_User()
+        public void UnitTest_differentViewsForDifferentRoles_User_CheckControllerRedirection()
         {
             mockDB();
             var controller = new AccountsController(_dbContext);
@@ -318,10 +321,22 @@ namespace XUnitTestCharityProject
             var redirectToActionResult =
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Home", redirectToActionResult.ControllerName);
+        }
+        [Fact]
+        public void UnitTest_differentViewsForDifferentRoles_User_CheckViewRedirection()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            var user = savedAccounts[0];
+            user.password = "samplepass1";
+
+            IActionResult res = controller.Login(user, false);
+            var redirectToActionResult =
+            Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Index", redirectToActionResult.ActionName);
         }
         [Fact]
-        public void unitTest_differentViewsForDifferentRoles_Organization()
+        public void UnitTest_differentViewsForDifferentRoles_Organization_CheckControllerRedirection()
         {
             mockDB();
             var controller = new AccountsController(_dbContext);
@@ -332,10 +347,22 @@ namespace XUnitTestCharityProject
             var redirectToActionResult =
             Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Organizations", redirectToActionResult.ControllerName);
+        }
+        [Fact]
+        public void UnitTest_differentViewsForDifferentRoles_Organization_CheckViewRedirection()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            var user = savedAccounts[3];
+            user.password = "samplepass4";
+
+            IActionResult res = controller.Login(user, false);
+            var redirectToActionResult =
+            Assert.IsType<RedirectToActionResult>(res);
             Assert.Equal("Details", redirectToActionResult.ActionName);
         }
         [Fact]
-        public async void unitTest_PastActions()
+        public async void UnitTest_PastActions()
         {
             mockDB();
             var controller = new HomeController(_dbContext);
@@ -346,7 +373,7 @@ namespace XUnitTestCharityProject
             Assert.Equal(_dbContext.action.Where(a => a.endDateTime < DateTime.Now).Count(), controller.ViewBag.pastActions.Count);
         }
         [Fact]
-        public async void unitTest_FutureActions()
+        public async void UnitTest_FutureActions()
         {
             mockDB();
             var controller = new HomeController(_dbContext);
@@ -357,14 +384,125 @@ namespace XUnitTestCharityProject
             Assert.Equal(_dbContext.action.Where(a => a.startDateTime > DateTime.Now).Count(), controller.ViewBag.futureActions.Count);
         }
         [Fact]
-        public async void unitTest_MoneyTransferringNormal()
+        public void UnitTest_MoneyTransferringNormal_CheckTransactionValidity()
         {
             mockDB();
             var userTransferring = _dbContext.user.FirstOrDefault();
-            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString()));
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
             var organizationReceiving = _dbContext.organization.FirstOrDefault();
-            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString()));
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 10;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
 
+            Assert.True(possible);
         }
+        [Fact]
+        public void UnitTest_MoneyTransferringNormal_CheckUserAmount()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 10;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
+
+            Assert.Equal(amountBeforeUser - 10, hisCard.amount);
+        }
+        [Fact]
+        public void UnitTest_MoneyTransferringNormal_CheckOrganizationAmount()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 10;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
+
+            Assert.Equal(amountBeforeOrga + 10, theirCard.amount);
+        }
+        [Fact]
+        public void UnitTest_MoneyTransferringInvalid_CheckTransactionValidity()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 99999;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
+
+            Assert.False(possible);
+        }
+        [Fact]
+        public void UnitTest_MoneyTransferringInvalid_CheckUserAmount()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 99999;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
+
+            Assert.Equal(amountBeforeUser, hisCard.amount);
+        }
+        [Fact]
+        public void UnitTest_MoneyTransferringInvalid_CheckOrganizationAmount()
+        {
+            mockDB();
+            var userTransferring = _dbContext.user.FirstOrDefault();
+            var hisCard = _dbContext.card.Where(c => c.Id.ToString().Equals(userTransferring.creditCardId.ToString())).First();
+            var organizationReceiving = _dbContext.organization.FirstOrDefault();
+            var theirCard = _dbContext.card.Where(c => c.Id.ToString().Equals(organizationReceiving.creditCardNumber.ToString())).First();
+            var amountBeforeUser = hisCard.amount;
+            var amountBeforeOrga = theirCard.amount;
+            Payment payment = new Payment();
+            payment.amount = 99999;
+            payment.organizationReceiverId = organizationReceiving.Id;
+            payment.userSenderId = userTransferring.Id;
+            ProcessPayment p = new ProcessPayment();
+            var possible = p.DoPayment(payment, _dbContext);
+
+            Assert.Equal(amountBeforeOrga, theirCard.amount);
+        }
+        /*[Fact]
+        public void UnitTest_AddingCardToUser()
+        {
+            mockDB();
+
+        }*/
     }
+    
 }
