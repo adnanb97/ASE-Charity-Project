@@ -55,11 +55,14 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,description,value,userDonatedId")] Item item)
+        public async Task<IActionResult> Create([Bind("Id,name,description,value,userDonatedId")] Item item, string loggedUser = null)
         {
             if (ModelState.IsValid)
             {
-                string userUsername = HttpContext.Session.GetString("username");
+                string userUsername = loggedUser;
+                if (loggedUser == null)
+                    userUsername = HttpContext.Session.GetString("username");
+                
                 var account = await _context.account.FirstOrDefaultAsync(m => m.username == userUsername);
                 if (account == null)
                 {

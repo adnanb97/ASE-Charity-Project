@@ -20,6 +20,10 @@ namespace CharityProject.Controllers
             _context = context;
         }
 
+        public CharityActionsController()
+        {
+        }
+
         // GET: CharityActions
         public async Task<IActionResult> Index()
         {
@@ -55,11 +59,13 @@ namespace CharityProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityAction charityAction)
+        public async Task<IActionResult> Create([Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityAction charityAction, string loggedOrg = null)
         {
             if (ModelState.IsValid)
             {
-                string orgId = HttpContext.Session.GetString("idOfLoggedAccount");
+                string orgId = loggedOrg;
+                if(orgId == null)
+                    orgId = HttpContext.Session.GetString("idOfLoggedAccount");
                 charityAction.organizationId = Guid.Parse(orgId);
                 charityAction.creationDateTime = DateTime.Now;
 

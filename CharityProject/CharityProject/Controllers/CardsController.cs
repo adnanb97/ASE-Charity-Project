@@ -54,12 +54,19 @@ namespace CharityProject
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,dateOfExpiry,bankName,amount,creditCardNumber")] Card card)
+        public async Task<IActionResult> Create([Bind("Id,dateOfExpiry,bankName,amount,creditCardNumber")] Card card, string loggedUsr = null)
         {
             if (ModelState.IsValid)
             {
                 card.Id = Guid.NewGuid();
-                var loggedUser = _context.user.Where(u => u.Id.ToString() == HttpContext.Session.GetString("idOfLoggedAccount")).Single();
+                string idOfLoggedAccount = loggedUsr;
+                if (loggedUsr == null)
+                { 
+                    idOfLoggedAccount = HttpContext.Session.GetString("idOfLoggedAccount");
+                }
+                
+
+                var loggedUser = _context.user.Where(u => u.Id.ToString() == idOfLoggedAccount).Single();
                 loggedUser.creditCardId = card.Id;
                 _context.Add(card);
                 await _context.SaveChangesAsync();

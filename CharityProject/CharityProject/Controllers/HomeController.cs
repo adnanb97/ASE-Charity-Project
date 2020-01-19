@@ -22,13 +22,17 @@ namespace CharityProject.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string loggedUsr = null)
         {
-            if (HttpContext.Session.GetString("username") == null)
-                return RedirectToAction("", "");
-            if (HttpContext.Session.GetInt32("IsUser") == 0)
+            if (loggedUsr == null)
             {
-                return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+                if (HttpContext.Session.GetString("username") == null)
+                    return RedirectToAction("", "");
+
+                if (HttpContext.Session.GetInt32("IsUser") == 0)
+                {
+                    return RedirectToAction("Details", "Organizations", new { id = HttpContext.Session.GetString("idOfLoggedAccount") });
+                }
             }
             var activeActions = await _context.action.Where(a => a.endDateTime >= DateTime.Now && a.startDateTime <= DateTime.Now).ToListAsync();
             var pastActions = await _context.action.Where(a => a.endDateTime < DateTime.Now).ToListAsync();

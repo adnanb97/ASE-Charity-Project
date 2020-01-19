@@ -21,6 +21,11 @@ namespace CharityProject.Controllers
             _context = context;
         }
 
+        public UsersController()
+        {
+
+        }
+
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -54,19 +59,14 @@ namespace CharityProject.Controllers
             var image = await _context.image.FindAsync(account.imageId);
             ViewData["ImageURL"] = image.Path;
 
-            if (user.creditCardId.ToString() == "00000000-0000-0000-0000-000000000000")
-                ViewBag.showButton = 1;
-            else
-                ViewBag.showButton = 0;
-
-            string userId = HttpContext.Session.GetString("idOfLoggedAccount");
+            //string userId = HttpContext.Session.GetString("idOfLoggedAccount");
             var donated = await _context.itemInAction.ToListAsync();
            
             List<Item> donatedItems = new List<Item>();
             List<CharityAction> actDoneted = new List<CharityAction>();
             foreach(var item in donated)
             {
-                var it = await _context.item.Where(i => i.userDonatedId == Guid.Parse(userId) && i.Id == item.itemId).FirstOrDefaultAsync();
+                var it = await _context.item.Where(i => i.userDonatedId == id && i.Id == item.itemId).FirstOrDefaultAsync();
                 var actionDonetedTo = await _context.action.Where(a => a.Id == item.actionId).FirstOrDefaultAsync();
                 if (it != null)
                 {
@@ -78,7 +78,7 @@ namespace CharityProject.Controllers
             ViewBag.items = donatedItems;
             ViewBag.actDoneted = actDoneted;
 
-            var payments = await _context.payment.Where(p => p.userSenderId == Guid.Parse(userId)).ToListAsync();
+            var payments = await _context.payment.Where(p => p.userSenderId == id).ToListAsync();
             List<Organization> organizations = new List<Organization>();
             foreach (var payment in payments)
             {
@@ -90,7 +90,7 @@ namespace CharityProject.Controllers
             ViewBag.payments = payments;
             ViewBag.organizations = organizations;
 
-            var participatedActions = await _context.userParticipatingInAction.Where(p => p.userId == Guid.Parse(userId)).ToListAsync();
+            var participatedActions = await _context.userParticipatingInAction.Where(p => p.userId == id).ToListAsync();
             List<CharityAction> myActions = new List<CharityAction>();
             List<Organization> organizedBy = new List<Organization>();
             foreach (var part in participatedActions)
