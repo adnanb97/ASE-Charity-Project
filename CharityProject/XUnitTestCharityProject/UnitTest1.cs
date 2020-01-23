@@ -209,6 +209,41 @@ namespace XUnitTestCharityProject
         }
 
         //TESTS
+        [Fact]
+        public async void UnitTest_addUser()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            int counter = _dbContext.user.Count();
+
+            var result = await controller.CreateUserAccount(new Account { username = "newTestUser", email = "test@email.com", password = "testpass"}, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5)});
+
+            Assert.Equal(counter + 1, _dbContext.user.Count());
+        }
+
+        [Fact]
+        public async void UnitTest_addAccount()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            int counter = _dbContext.account.Count();
+
+            var result = await controller.CreateUserAccount(new Account { username = "newTestUser1", email = "test1@email.com", password = "testpass" }, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5) });
+
+            Assert.Equal(counter + 1, _dbContext.account.Count());
+        }
+
+        [Fact]
+        public async void UnitTest_addOrganization()
+        {
+            mockDB();
+            var controller = new AccountsController(_dbContext);
+            int counter = _dbContext.organization.Count();
+
+            var result = await controller.CreateOrganizationAccount(new Account { username = "newTestUser2", email = "test2@email.com", password = "testpass" }, new Organization { Id = new Guid(), name = "TestOrg", dateOfFounding = new DateTime(1899, 1, 16), description = "test organization adding"});
+
+            Assert.Equal(counter + 1, _dbContext.organization.Count());
+        }
 
         [Fact]
         public async void UnitTest_addAction()

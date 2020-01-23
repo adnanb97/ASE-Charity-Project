@@ -137,8 +137,8 @@ namespace CharityProject.Controllers
                 HttpContext.Session.SetString("registrationGender", user.gender.ToString());
                 HttpContext.Session.SetString("registrationBirthday", (user.dateOfBirth).ToString());
  
-                await _context.SaveChangesAsync();
-                return RedirectToAction("CreateUserAccount", "Account");//   ("Account/Create");
+               // await _context.SaveChangesAsync();
+                return RedirectToAction("CreateUserAccount", "Account");//   ("Account/CreateUserAccount");
             }
             return View(user);
         }
