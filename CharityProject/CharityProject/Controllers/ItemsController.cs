@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ItemsController : Controller
     {
         private readonly CharityContext _context;

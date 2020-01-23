@@ -119,10 +119,11 @@ namespace CharityProject.Controllers
         [Route("CreateUserAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account, User user = null)
+        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account)//, User user = null)
         {
             if (ModelState.IsValid)
             {
+                User user = null;
                 if (!UsernameExists(account.username))
                 {
                     account.Id = Guid.NewGuid();

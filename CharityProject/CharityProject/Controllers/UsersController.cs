@@ -21,10 +21,6 @@ namespace CharityProject.Controllers
             _context = context;
         }
 
-        public UsersController()
-        {
-
-        }
 
         // GET: Users
         public async Task<IActionResult> Index()
@@ -56,8 +52,8 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
             var account = await _context.account.FindAsync(user.UserAccount);
-            var image = await _context.image.FindAsync(account.imageId);
-            ViewData["ImageURL"] = image.Path;
+            var image =  _context.image.FirstOrDefault(a => a.Id.ToString() == account.imageId.ToString());
+            if(image != null) ViewData["ImageURL"] = image.Path;
 
             //string userId = HttpContext.Session.GetString("idOfLoggedAccount");
             var donated = await _context.itemInAction.ToListAsync();

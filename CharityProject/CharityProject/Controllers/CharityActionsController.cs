@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class CharityActionsController : Controller
     {
         private readonly CharityContext _context;
@@ -18,10 +19,6 @@ namespace CharityProject.Controllers
         public CharityActionsController(CharityContext context)
         {
             _context = context;
-        }
-
-        public CharityActionsController()
-        {
         }
 
         // GET: CharityActions

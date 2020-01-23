@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class CardsController : Controller
     {
         private readonly CharityContext _context;

@@ -209,7 +209,7 @@ namespace XUnitTestCharityProject
         }
 
         //TESTS
-        [Fact]
+       /* [Fact]
         public async void UnitTest_addUser()
         {
             mockDB();
@@ -219,9 +219,9 @@ namespace XUnitTestCharityProject
             var result = await controller.CreateUserAccount(new Account { username = "newTestUser", email = "test@email.com", password = "testpass"}, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5)});
 
             Assert.Equal(counter + 1, _dbContext.user.Count());
-        }
+        }*/
 
-        [Fact]
+        /*[Fact]
         public async void UnitTest_addAccount()
         {
             mockDB();
@@ -231,7 +231,7 @@ namespace XUnitTestCharityProject
             var result = await controller.CreateUserAccount(new Account { username = "newTestUser1", email = "test1@email.com", password = "testpass" }, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5) });
 
             Assert.Equal(counter + 1, _dbContext.account.Count());
-        }
+        }*/
 
         [Fact]
         public async void UnitTest_addOrganization()
