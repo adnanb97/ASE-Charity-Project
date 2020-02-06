@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ItemsController : Controller
     {
         private readonly CharityContext _context;
@@ -23,12 +24,16 @@ namespace CharityProject.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View(await _context.item.ToListAsync());
         }
 
         // GET: Items/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id == null)
             {
                 return NotFound();
@@ -47,6 +52,8 @@ namespace CharityProject.Controllers
         // GET: Items/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View();
         }
 
@@ -57,6 +64,9 @@ namespace CharityProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,name,description,value,userDonatedId")] Item item, string loggedUser = null)
         {
+            if (loggedUser == null)
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (ModelState.IsValid)
             {
                 string userUsername = loggedUser;
@@ -106,6 +116,8 @@ namespace CharityProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,description,value,userDonatedId")] Item item)
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id != item.Id)
             {
                 return NotFound();

@@ -207,7 +207,8 @@ namespace XUnitTestCharityProject
 
             _dbContext.SaveChanges();
         }
-
+        
+        #region Tests
         //TESTS
         [Fact]
         public async void UnitTest_addUser()
@@ -216,11 +217,11 @@ namespace XUnitTestCharityProject
             var controller = new AccountsController(_dbContext);
             int counter = _dbContext.user.Count();
 
-            var result = await controller.CreateUserAccount(new Account { username = "newTestUser", email = "test@email.com", password = "testpass"}, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5)});
-
+            var result = await controller.CreateUserAccount(new Account { username = "newTestUser", email = "test@email.com", password = "testpass"}, userFirstNameParam: "testing");
+            
             Assert.Equal(counter + 1, _dbContext.user.Count());
         }
-
+        
         [Fact]
         public async void UnitTest_addAccount()
         {
@@ -228,11 +229,11 @@ namespace XUnitTestCharityProject
             var controller = new AccountsController(_dbContext);
             int counter = _dbContext.account.Count();
 
-            var result = await controller.CreateUserAccount(new Account { username = "newTestUser1", email = "test1@email.com", password = "testpass" }, new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5) });
+            var result = await controller.CreateUserAccount(new Account { username = "newTestUser1", email = "test1@email.com", password = "testpass" }, userFirstNameParam: "testing");
 
             Assert.Equal(counter + 1, _dbContext.account.Count());
         }
-
+        
         [Fact]
         public async void UnitTest_addOrganization()
         {
@@ -240,11 +241,11 @@ namespace XUnitTestCharityProject
             var controller = new AccountsController(_dbContext);
             int counter = _dbContext.organization.Count();
 
-            var result = await controller.CreateOrganizationAccount(new Account { username = "newTestUser2", email = "test2@email.com", password = "testpass" }, new Organization { Id = new Guid(), name = "TestOrg", dateOfFounding = new DateTime(1899, 1, 16), description = "test organization adding"});
+            var result = await controller.CreateOrganizationAccount(new Account { username = "newTestUser2", email = "test2@email.com", password = "testpass" }, userFirstNameParam: "testing");
 
             Assert.Equal(counter + 1, _dbContext.organization.Count());
         }
-
+        
         [Fact]
         public async void UnitTest_addAction()
         {
@@ -258,7 +259,7 @@ namespace XUnitTestCharityProject
 
             Assert.Equal(counter + 1, _dbContext.action.Count());
         }
-
+        
         [Fact]
         public async void UnitTest_addItem()
         {
@@ -271,7 +272,7 @@ namespace XUnitTestCharityProject
            
             Assert.Equal(counter + 1, _dbContext.item.Count());
         }
-
+        
         [Fact]
         public async void UnitTest_CurrentlyActiveActions()
         {
@@ -304,7 +305,7 @@ namespace XUnitTestCharityProject
                 }
             }
 
-            var result = await controller.Details(user.Id);
+            var result = await controller.Details(user.Id, userFirstNameParam: "testing");
 
             Assert.Equal(donatedItems.Count, controller.ViewBag.items.Count);
         }
@@ -317,7 +318,7 @@ namespace XUnitTestCharityProject
             var user = _dbContext.user.FirstOrDefault();
             var payments = await _dbContext.payment.Where(p => p.userSenderId == user.Id).ToListAsync();
 
-            var result = await controller.Details(user.Id);
+            var result = await controller.Details(user.Id, userFirstNameParam: "testing");
 
             Assert.Equal(payments.Count, controller.ViewBag.payments.Count);
         }
@@ -339,7 +340,7 @@ namespace XUnitTestCharityProject
                 }
             }
 
-            var result = await controller.Details(user.Id);
+            var result = await controller.Details(user.Id, userFirstNameParam: "testing");
 
             Assert.Equal(actions.Count, controller.ViewBag.myActions.Count);
         }
@@ -570,6 +571,8 @@ namespace XUnitTestCharityProject
 
             Assert.Equal(newCard.Id.ToString(), userCreatingCard.creditCardId.ToString());
         }
+        #endregion
+        
     }
-    
+
 }

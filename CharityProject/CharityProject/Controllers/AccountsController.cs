@@ -41,8 +41,7 @@ namespace CharityProject.Controllers
         [Route("Login")]
         [HttpPost]
         public IActionResult Login(Account account, bool usesSession = true)
-        {
-            
+        {            
             if (ModelState.IsValid)
             {
                 var sha256 = SHA256.Create();
@@ -119,7 +118,7 @@ namespace CharityProject.Controllers
         [Route("CreateUserAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account, User user = null)
+        public async Task<IActionResult> CreateUserAccount([Bind("Id, username, password, email")] Account account, string userFirstNameParam = null)
         {
             if (ModelState.IsValid)
             {
@@ -132,8 +131,8 @@ namespace CharityProject.Controllers
                     var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
                     account.password = hash1;
                     _context.Add(account);
-
-                    if (user == null)
+                    User user = null;
+                    if (userFirstNameParam == null)
                     {
                         string userId = HttpContext.Session.GetString("registrationId");
                         string userFirstName = HttpContext.Session.GetString("registrationFirstName");
@@ -154,7 +153,10 @@ namespace CharityProject.Controllers
                         HttpContext.Session.Remove("registrationGender");
                         HttpContext.Session.Remove("registrationBirthday");
                     }
-
+                    else
+                    {
+                        user = new User { Id = new Guid(), firstName = "Test", lastName = "Unit", gender = 'F', dateOfBirth = new DateTime(1990, 3, 5) };
+                    }
                     user.UserAccount = account.Id;
                     _context.Add<User>(user);
                     await _context.SaveChangesAsync();
@@ -180,7 +182,7 @@ namespace CharityProject.Controllers
         [Route("CreateOrganizationAccount")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password,email")] Account account, Organization organization = null)
+        public async Task<IActionResult> CreateOrganizationAccount([Bind("Id, username, password,email")] Account account, string userFirstNameParam = null)
         {
             if (ModelState.IsValid)
             {
@@ -193,8 +195,8 @@ namespace CharityProject.Controllers
                     var hash1 = BitConverter.ToString(pass1).Replace("-", "").ToLower();
                     account.password = hash1;
                     _context.Add(account);
-
-                    if (organization == null)
+                    Organization organization = null;
+                    if (userFirstNameParam == null)
                     {
                         string organizationId = HttpContext.Session.GetString("registrationId");
                         string organizationName = HttpContext.Session.GetString("registrationName");
@@ -212,7 +214,10 @@ namespace CharityProject.Controllers
                         HttpContext.Session.Remove("registrationDateOfFounding");
                         HttpContext.Session.Remove("registrationDescription");
                     }
-
+                    else
+                    {
+                        organization = new Organization { Id = new Guid(), name = "TestOrg", dateOfFounding = new DateTime(1899, 1, 16), description = "test organization adding" };
+                    }
                     organization.UserAccount = account.Id;
                     _context.Add(organization);
 
