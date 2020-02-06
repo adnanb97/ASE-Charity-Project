@@ -21,11 +21,6 @@ namespace CharityProject.Controllers
             _context = context;
         }
 
-        public UsersController()
-        {
-
-        }
-
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -42,8 +37,11 @@ namespace CharityProject.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid? id, string userFirstNameParam = null)
         {
+            if (userFirstNameParam == null)
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id == null)
             {
                 return NotFound();
@@ -56,8 +54,12 @@ namespace CharityProject.Controllers
                 return NotFound();
             }
             var account = await _context.account.FindAsync(user.UserAccount);
-            var image = await _context.image.FindAsync(account.imageId);
-            ViewData["ImageURL"] = image.Path;
+            var image = _context.image.FirstOrDefault(a => a.Id.ToString().Equals(account.imageId.ToString()));
+            if (image != null) ViewData["ImageURL"] = image.Path;
+            if (user.creditCardId.ToString() == "00000000-0000-0000-0000-000000000000")
+                ViewBag.showButton = 1;
+            else
+                ViewBag.showButton = 0;
 
             //string userId = HttpContext.Session.GetString("idOfLoggedAccount");
             var donated = await _context.itemInAction.ToListAsync();

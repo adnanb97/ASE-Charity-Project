@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class CharityActionsController : Controller
     {
         private readonly CharityContext _context;
@@ -18,10 +19,6 @@ namespace CharityProject.Controllers
         public CharityActionsController(CharityContext context)
         {
             _context = context;
-        }
-
-        public CharityActionsController()
-        {
         }
 
         // GET: CharityActions
@@ -51,6 +48,8 @@ namespace CharityProject.Controllers
         // GET: CharityActions/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View();
         }
 
@@ -61,6 +60,9 @@ namespace CharityProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,name,description,actionType,organizationId,creationDateTime,startDateTime,endDateTime")] CharityAction charityAction, string loggedOrg = null)
         {
+            if (loggedOrg == null)
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (ModelState.IsValid)
             {
                 string orgId = loggedOrg;
@@ -80,6 +82,8 @@ namespace CharityProject.Controllers
         // GET: CharityActions/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id == null)
             {
                 return NotFound();

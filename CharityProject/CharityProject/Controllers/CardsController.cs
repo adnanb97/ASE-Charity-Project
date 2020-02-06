@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CharityProject
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class CardsController : Controller
     {
         private readonly CharityContext _context;
@@ -22,12 +23,16 @@ namespace CharityProject
         // GET: Cards
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View(await _context.card.ToListAsync());
         }
 
         // GET: Cards/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +51,8 @@ namespace CharityProject
         // GET: Cards/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             return View();
         }
 
@@ -56,6 +63,9 @@ namespace CharityProject
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,dateOfExpiry,bankName,amount,creditCardNumber")] Card card, string loggedUsr = null)
         {
+            if (loggedUsr == null)
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (ModelState.IsValid)
             {
                 card.Id = Guid.NewGuid();
@@ -78,6 +88,8 @@ namespace CharityProject
         // GET: Cards/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (HttpContext.Session.GetString("username") == null)
+                return RedirectToAction("", "");
             if (id == null)
             {
                 return NotFound();

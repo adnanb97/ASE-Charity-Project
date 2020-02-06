@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20191121135328_Fixed migration for Post Reaction %28no text when commenting%29 and User %28Gender%29.cs" />
     <Compile Remove="Migrations\20191127182643_Fixed models and added password hashing.cs" />
     <Compile Remove="Migrations\20191127182812_Fixed models and added password hashing.cs" />
+    <Compile Remove="Migrations\20191127183201_Fixed models and added password hashing.cs" />
+    <Compile Remove="Migrations\20191215231941_Changing name to CharityAction.cs" />
   </ItemGroup>
 
   <ItemGroup>

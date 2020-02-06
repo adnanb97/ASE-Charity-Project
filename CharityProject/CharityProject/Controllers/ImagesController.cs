@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CharityProject.Controllers
 {
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ImagesController : Controller
     {
         private CharityContext _context;
@@ -30,7 +31,7 @@ namespace CharityProject.Controllers
                 _context.image.Add(image);
             }
 
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return View();
         }
